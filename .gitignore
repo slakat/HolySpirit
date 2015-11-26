@@ -7,6 +7,11 @@
 # Ignore bundler config.
 /.bundle
 
+# MAC
+.DS_Store
+
+# Ruby Mine
+.idea/*
 
 /db/schema.rb
 
