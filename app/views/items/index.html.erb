@@ -1,0 +1,51 @@
+<h2>Lista de objetos</h2>
+<table>
+      <thead>
+            <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Efectos</th>
+                  <th>Dueño</th>
+                  <th></th>
+            </tr>
+      </thead>
+      <tbody>
+            <% if @items.blank? %>
+            <tr>
+                  <td colspan="6">
+                        <em>No se han encontrado items</em>
+                  </td>
+            </tr>
+            <% end %>
+            <% @items.each do |item| %>
+            <tr>
+                  <td>
+                        <%= item.name %>
+                  </td>
+                  <td>
+                        <%= item.description %>
+                  </td>
+                  <td>
+                        <%= item.effect %>
+                  </td>
+                  <td>
+                        <%= item.user.name %>
+                  </td>
+
+                  <td>
+                        <%  if @users_item.find_by(item_id: item.id, user_id: @user.id) == nil%>
+                              <div='get'>
+                                    <%= button_to "get item", user_get_item_path(item.id), :method => "post" %>
+                              </div>
+                        <% end %>
+                        <% if @users_item.find_by(item_id: item.id, user_id: @user.id) %>
+                              <div='use'>
+                                    <%= button_to "use item", user_use_item_path(item.id), :method => "post" %>
+                              </div>
+                        <% end %>
+
+                  </td>
+            </tr>
+            <% end %>
+      </tbody>
+</table>

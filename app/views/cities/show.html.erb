@@ -1,0 +1,36 @@
+<h2>Ciudad: <%=@city.name%></h2>
+<table>
+  <thead>
+    <tr>
+      <th>Alcalde</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @city.blank? %>
+      <tr>
+        <td colspan="6">
+          <em>No se ha encontrado esta ciudad</em>
+        </td>
+      </tr>
+    <% else %>
+      <tr>
+        <td>
+          <%= User.find_by_id(@city.mayor_id).username %>
+        </td>
+        <td>
+          <%= link_to 'editar', edit_city_url(@city) %>
+        </td>
+        <td>
+          <%= link_to [@city], method: :delete do %>
+            eliminar
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Agregar/Cambiar Alcalde', newMayor_url(@city) %>
+<br/>
+<%= link_to 'ir a todas las ciudades', cities_path %>

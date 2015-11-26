@@ -1,0 +1,40 @@
+<div class="field">
+      <div class="col-md-3">
+            <%= f.label :name, 'Nombre', class: 'control-label' %>
+      </div>
+      <div class="col-md-9">
+            <%= f.text_field :name, class: 'form-control', required: true %>
+      </div>
+</div>
+<div class="field">
+      <div class="col-md-3">
+            <%= f.label :administrator_id,'Cambia el administrador' , class: 'control-label' %>
+      </div>
+      <div class="col-md-9">
+            <%= f.select :administrator_id, @users %>
+      </div>
+</div>
+<div class="field">
+      <div class="col-md-3">
+            <%= f.label :city_id,'Cambia la ciudad', class: 'control-label' %>
+      </div>
+      <div class="col-md-9">
+            <%= f.select :city_id, @cities %>
+      </div>
+</div>
+<div class="field">
+      <div class="col-md-3">
+            <%= f.label :access,'Cambia el tipo de acceso', class: 'control-label' %>
+      </div>
+      <div class="col-md-9">
+            <%= f.select :access, @access %>
+      </div>
+</div>
+<div class="field">
+      <div class="col-md-3">
+            <%= f.label :logo, 'Cambia el logo de tu facción', class: 'control-label' %>
+      </div>
+      <div class="col-md-9">
+            <%= f.file_field :logo %>
+      </div>
+</div>

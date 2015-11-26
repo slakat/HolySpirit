@@ -1,0 +1,28 @@
+%h1 Showing a City
+%table
+  %thead
+    %tr
+      %th Nombre
+      %th Alcalde
+      %th Edit
+      %th Elimnar
+  %tbody
+    - if @city.blank?
+      %tr
+        %td{:colspan => "6"}
+          %em No se ha encontrado esta ciudad
+    - else
+      %tr
+        %td= @city.name
+        %td= User.find_by_id(@city.mayor_id).username
+        %td= link_to 'editar', edit_city_url(@city)
+        %td
+          = link_to [@city], method: :delete do
+            Eliminar
+
+
+=link_to 'Agregar/Cambiar Alcalde', addmayor_url(@city)
+
+%br
+
+=link_to 'ir a todas las ciudades', cities_path

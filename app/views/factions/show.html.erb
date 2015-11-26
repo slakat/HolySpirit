@@ -1,0 +1,78 @@
+<h1><%=@faction.name%> </h1>
+<% if @faction.administrator_id.to_s == @user.id.to_s %>
+Eres administrador de esta facción.
+
+      <%end%>
+      <%if @faction.logo_file_name %>
+      <br>
+      <br>
+      Logo:
+      <br>
+      <%= image_tag(@faction.logo.url(:thumb)) %>
+      <br>
+      <%end%>
+      
+<div> <!--FIX a problema donde el último div simplemente no estaba dentro de main, que contiene esta página-->
+<table>
+      <thead>
+            <tr>
+                  <th>Ciudad</th>
+                  <th>Administrador</th>
+                  <th>Acceso</th>
+                  <th></th>
+                  <th></th>
+            </tr>
+      </thead>
+      <tbody>
+            <% if @faction.blank? %>
+            <tr>
+                  <td colspan="6">
+                        <em>No se ha encontrado el faccion</em>
+                  </td>
+            </tr>
+            <% else %>
+            <tr>
+                  <td>
+                        <%= @faction.city.name %>
+                  </td>
+                  <td>
+                        <%= @faction.administrator.name %>
+                  </td>
+                  <td>
+                        <%= @faction.access %>
+                  </td>
+                  <% if @faction.administrator_id.to_s == @user.id.to_s %>
+                  <td>
+                        <%= link_to 'editar', edit_faction_url(@faction) %>
+                  </td>
+                  <td>
+                        <%= link_to [@faction], method: :delete do %>
+                        eliminar
+                        <% end %>
+                        <% end %>
+                  </td>
+            </tr>
+            <% end %>
+      </tbody>
+</table>
+
+<%if session[:user_id]%>
+      <%if @faction.users.find_by_id(session[:user_id]) == nil%>
+            <div='subscribirse'>
+                  <%= button_to "Subscribirse", faction_join_path(@faction.id), :method => "post" %>
+            </div>
+      <%end%>
+<%end%>
+
+
+<%if @faction.users.find_by_id(session[:user_id]) != nil%>
+<div='retirarse'>
+      <%= button_to "retirarse", faction_leave_path(@faction.id), :method => "post" %>
+</div>
+<br>
+      <div='membresia'> <!-- FIXME: Por alguna razón, este div queda fuera!-->
+            <%= 'Ya eres miembro de esta facción. '%>
+      </div>
+<%end%>
+
+</div>

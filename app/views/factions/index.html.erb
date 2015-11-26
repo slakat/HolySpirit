@@ -1,0 +1,34 @@
+<h1> Lista de facciones </h1>
+<table>
+                  <% if @factions != nil %>
+      <thead>
+            <tr>
+                  <th>Nombre</th>
+                  <th>Ciudad</th>
+                  <th>Administrador</th>
+                  <th>Acceso</th>
+                  <th></th>
+            </tr>
+            <tbody>
+                  <%end %>
+                  <% if @factions.blank? %>
+                  <tr>
+                        <td colspan="6">
+                              <em>No se han encontrado facciones</em>
+                        </td>
+                  </tr>
+                  <% end %>
+                  <% @factions.each do |faction| %>
+                  <tr>
+                        <td><%= faction.name %></td>
+                        <td><%= faction.city.name %></td>          <!-- Declarado en el modelo  -->
+                        <td><%= faction.administrator.name %></td> <!--TODO: FIXME si un usuario se elimina, la faccion ha de cambiar de admin.-->
+                        <td><%= faction.access %></td>
+                        <%  if faction.administrator.id.to_s == @user.id.to_s %>
+                        <td><%= link_to 'Perfil de facción', faction_path(faction) %></td>
+                        </tr>
+                        <% end %>
+                        <% end %>
+                  </tbody>
+            </thead>
+      </table>

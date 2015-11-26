@@ -1,0 +1,23 @@
+.field
+  .col-md-3
+    = f.label :name, 'Nombre', class: 'control-label'
+  .col-md-9
+    = f.text_field :name, class: 'form-control', required: true
+
+.field
+  .col-md-3
+    = f.label :username, 'Username', class: 'control-label'
+  .col-md-9
+    = f.text_field :username, class: 'form-control', required: true
+
+.field
+  .col-md-3
+    = f.label :password, 'Password', class: 'control-label'
+  .col-md-9
+    = f.password_field :password, class: 'form-control', required: true
+
+.field
+  .col-md-3
+    = f.label :password_confirmation, 'Confirmation', class: 'control-label'
+  .col-md-9
+    = f.password_field :password_confirmation, class: 'form-control', required: true

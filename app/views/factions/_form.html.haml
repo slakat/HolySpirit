@@ -1,0 +1,23 @@
+.field
+  .col-md-3
+    = f.label :name, 'Nombre', class: 'control-label'
+  .col-md-9
+    = f.text_field :name, class: 'form-control', required: true
+
+.field
+  .col-md-3
+    = f.label :administrator_id, class: 'control-label'
+  .col-md-9
+    = f.select :administrator_id, @users
+
+.field
+  .col-md-3
+    = f.label :city_id, class: 'control-label'
+  .col-md-9
+    = f.select :city_id, @cities
+
+    .field
+      .col-md-3
+        = f.label :access, class: 'control-label'
+      .col-md-9
+        = f.select :access, @access

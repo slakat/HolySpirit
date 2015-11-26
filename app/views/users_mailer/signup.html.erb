@@ -1,0 +1,6 @@
+<h1 style="color: red;">Valida tu cuenta</h1>
+
+<p>
+  Hola, <%= @user.first_name %>. Valida tu cuenta con el siguiente link:
+  <%= link_to validate_users_url(@user.validation_token), validate_users_url(@user.validation_token) %>
+</p>

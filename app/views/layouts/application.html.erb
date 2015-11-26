@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <title>YisusPlusOne</title>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <%= csrf_meta_tags %>
+</head>
+<body>
+      <header>
+            <div id='sessioninit'>
+                  <% if(session[:user_id] == nil) %>
+                  <%=     link_to 'Nuevo Usuario', new_user_path%>
+                  <br>
+                  <%end%>
+                  <%=  if(session[:user_id] != nil)
+                  link_to 'Log Out', '/log-out'
+                  else
+                  link_to 'Log In' , '/log-in'
+                  end
+                  %>
+            </div id='sessioninit'>
+            <div id='sessionobject'>
+                  <%= if session[:user_id]
+                  "Has iniciado sesión como " + User.find_by_id(session[:user_id]).username
+                  else
+                  "No has iniciado sesión."
+                  end
+                  %>
+            </div id='sessionobject'>
+
+            <div id='boton'>
+                  <%= link_to "Home", root_path%>
+            </div>
+
+            <% if(session[:user_id] != nil) %>
+            <div id='boton'>
+                  <%= link_to "Perfil", user_path(session[:user_id])%>
+            </div>
+            <%end %>
+
+            <% if(session[:user_id] != nil) %>
+            <% end %>
+
+            <div id='welcome'>
+                  <%= link_to "CityConquest", game_path%>
+            </div>
+      </header>
+
+      <div id='content'>
+
+            <div id='sidebar'>
+                  <% if(session[:user_id] != nil) %>
+                  <div id='sidebutton'>
+                  <%= if session[:user_id]
+                   "Energía: " + User.find_by_id(session[:user_id]).energy.to_s
+                  end
+                  %>
+                  </div>
+                  <div id='sidebutton'>
+                  <%= if session[:user_id]
+                  "Puntaje: " + User.find_by_id(session[:user_id]).score.to_s
+                  end
+                  %>
+                  </div>
+
+                  <div id='sidebutton'>
+                        <%= link_to "checks", points_path%> <!-- #path a points_user-->
+                  </div>
+                  <div id='sidebutton'>
+                        <%= fact = User.find_by_id(session[:user_id])
+                        link_to "Facciones", factions_path #(fact[:id])
+                        %>
+                  </div>
+                  <div id='sidebutton'>
+                        <%= link_to "likes", new_user_path %> <!--#nueva tabla intermedia: likes-->
+                  </div>
+                  <div id='sidebutton'>
+                        <%= link_to "fotos", new_user_path%> <!-- #nueva tabla intermedia: fotos-->
+                  </div>
+                  <div id='sidebutton'>
+                        <%= link_to "videos", new_user_path %> <!--#nueva tabla intermedia: videos-->
+                  </div>
+                  <div id='sidebutton'>
+                        <%= link_to "comentarios", new_user_path%> <!-- #nueva tabla intermedia: comentarios en puntos de interés-->
+                  </div>
+                  <div id='sidebutton'>
+                        <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
+                  </div>
+                  <% end %>
+            </div>
+            <div id='main'>
+
+                  <br> <!-- VERY IMPORTANT. For aesthetical reasons.-->
+                  <%= yield %>
+
+            </div>
+      </div>
+
+</body>
+</html>

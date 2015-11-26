@@ -1,0 +1,71 @@
+<%if @faction == nil%>
+<h1>Listing all users</h1>
+<table>
+      <thead>
+            <tr>
+                  <th>Nombre</th>
+                  <th>Username</th>
+                  <th></th>
+            </tr>
+      </thead>
+      <tbody>
+            <% if @users.blank? %>
+            <tr>
+                  <td colspan="6">
+                        <em>No se han encontrado usuarios</em>
+                  </td>
+            </tr>
+            <% end %>
+            <% @users.each do |user| %>
+            <tr>
+                  <td>
+                        <%= user.name %>
+                  </td>
+                  <td>
+                        <%= user.username %>
+                  </td>
+                  <td>
+                        <%= link_to 'ir a mi perfil', user_path(user) if user.id == session[:user_id] %>
+                  </td>
+                  </tr>
+                  <% end %>
+            </tbody>
+      </table>
+
+<%
+else #FIXME: mala prácitca? Debe haber un modo mejor. 2 vistas?
+%>
+      <h1>Listing all users</h1>
+      <table>
+            <thead>
+                  <tr>
+                        <th>Nombre</th>
+                        <th>Username</th>
+                        <th></th>
+                  </tr>
+            </thead>
+            <tbody>
+                  <% if @faction.users.blank? %>
+                  <tr>
+                        <td colspan="6">
+                              <em>No se han encontrado usuarios</em>
+                        </td>
+                  </tr>
+                  <% end %>
+                  <% @faction.users.each do |user| %>
+                  <tr>
+                        <td>
+                              <%= user.name %>
+                        </td>
+                        <td>
+                              <%= user.username %>
+                        </td>
+                        <td>
+                              <%= link_to 'ir a mi perfil', user_path(user) if user.id == session[:user_id] %>
+                        </td>
+
+                        </tr>
+                        <% end %>
+                  </tbody>
+            </table>
+<%end%>

@@ -1,0 +1,112 @@
+<h2><%=@user.name + ' "' + @user.username%>''</h2>
+<div>
+      <div='info'>
+
+      <%= link_to 'edita tu información de usuario', edit_user_url(@user) if @user == User.all.find_by_id(session[:user_id]) %>
+      <%if @user.avatar_file_name != nil %>
+      <br>
+      <br>
+      Avatar:
+      <br>
+      <%= image_tag(@user.avatar.url(:thumb))%>
+      <br>
+      <%end%>
+      <!--</div>-->
+      <!--TODO:Hacer un user-points para facciones!!!--->
+
+      <div='user-factions'>
+      <h3>Facciones a las que perteneces:</h3>
+      <table>
+            <thead>
+                  <tr>
+                        <th>Facción</th>
+                        <th></th>
+                  </tr>
+            </thead>
+            <tbody>
+                  <% if @factions_users.blank? %>
+                  <tr>
+                        <td colspan="6">
+                              <em>No perteneces a ninguna facción.</em>
+                        </td>
+                  </tr>
+                  <% end %>
+
+                  <% @factions_users.each do |faction| %>
+                  <tr>
+                        <td>
+                              <%=Faction.find(faction.faction_id).name%>
+                        </td>
+                  </tr>
+                  <% end %>
+            </tbody>
+      </table>
+
+      <!---->
+      <div='user-points'>
+      <h3>Puntos a los que hiciste check-in:</h3>
+      <table>
+            <thead>
+                  <tr>
+                        <th>Puntos</th>
+                        <th></th>
+                  </tr>
+            </thead>
+            <tbody>
+                  <% if @points_users.blank? %>
+                  <tr>
+                        <td colspan="6">
+                              <em>No tienes puntos.</em>
+                        </td>
+                  </tr>
+                  <% end %>
+
+                  <% @points_users.each do |point| %>
+                  <tr>
+                        <td>
+                              <%=Point.find(point.point_id).name%>
+                        </td>
+                  </tr>
+                  <% end %>
+            </tbody>
+      </table>
+</div>
+
+<!---->
+<div='item-user'>
+<h3>Items que te pertenecen</h3>
+<table>
+      <thead>
+            <tr>
+                  <th>Item</th>
+                  <th></th>
+            </tr>
+      </thead>
+      <tbody>
+            <% if @items_users.blank? %>
+            <tr>
+                  <td colspan="6">
+                        <em>No tienes items.</em>
+                  </td>
+            </tr>
+            <% end %>
+            <% @items_users.each do |item| %>
+            <tr>
+                  <td>
+                        <%=Item.find(item.item_id).name%>
+                  </td>
+            </tr>
+            <% end %>
+      </tbody>
+</table>
+<div='eliminar'> <!-- FIXME: Se hecha parte del css parece-->
+<%= link_to [@user], method: :delete do %>
+eliminar usuario
+<% end %>
+</div>
+</div>
+
+<br>
+<br>
+
+</div>

@@ -1,0 +1,11 @@
+.row
+  .col-md-10.col-md-offset-1
+    %h2 Editando una ciudad
+    = form_for [@city], html: {class: 'form-horizontal' } do |f|
+      = render 'form', f: f
+
+      %br
+
+      .field
+        .col-md-4.col-md-offset-8
+          = f.submit 'Guardar', class:'btn btn-primary pull-right'

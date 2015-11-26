@@ -1,0 +1,25 @@
+.field
+  .col-md-3
+    = f.label :name, 'Nombre', class: 'control-label'
+  .col-md-9
+    = f.text_field :name, class: 'form-control', required: true
+
+.field
+  .col-md-3
+    = f.label :city_id, 'Ciudad', class: 'control-label'
+  .col-md-9
+    = f.select :city_id, @cities
+-#TODO: convertir a enum con el metodo de access en faction.
+
+.field
+  .col-md-3
+    = f.label :minCheckInTime, 'Tiempo mínimo para el próximo Check-In', class: 'control-label'
+  .col-md-9
+    = f.text_field :minCheckInTime, class: 'form-control', required: true
+
+
+.field
+  .col-md-3
+    = f.label :description, 'Description', class: 'control-label'
+  .col-md-9
+    = f.text_area :description, class: 'form-control', required: true

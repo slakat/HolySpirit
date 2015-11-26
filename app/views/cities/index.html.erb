@@ -1,0 +1,34 @@
+<h1>Listing all cities here</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Alcalde</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @cities.blank? %>
+      <tr>
+        <td colspan="6">
+          <em>No se han encontrado ciudades</em>
+        </td>
+      </tr>
+    <% end %>
+    <% @cities.each do |city| %>
+      <tr>
+        <td>
+          <%= city.name %>
+        </td>
+        <td>
+          <%= User.all[city.mayor_id-1].username %>
+        </td>
+        <%if session[:user_id].to_s == city.mayor_id.to_s %>
+        <td>
+          <%= link_to 'página de la ciudad', city_path(city)%>
+        </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
