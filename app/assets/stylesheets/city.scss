@@ -1,3 +1,12 @@
 // Place all the styles related to the City controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.skyline-box img{
+  display: inline;
+  clear: both;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 0 grey ;
+  height: 15em;
+  width: 100%;
+}
+//TODO: Dentro de lo posible, sería genial poder mostrar solo la mitad superior de la imágen en vez de apretarla al tamaño.
