@@ -1,52 +1,56 @@
-<h2>Listado de puntos de interés</h2>
-<table>
-      <thead>
-            <tr>
-                  <th>Nombre</th>
-                  <th>Ciudad</th>
-                  <th>Descripcion</th>
-                  <% #Faction %>
-                  <th>Tiempo mínimo de check-in</th>
-                  <th></th>
-            </tr>
-      </thead>
-      <tbody>
-            <% if @points.blank? %>
-            <tr>
-                  <td colspan="6">
-                        <em>No se han encontrado puntos de interés</em>
-                  </td>
-            </tr>
-            <% end %>
-            <% @points.each do |point| %>
-            <tr>
-                  <td>
-                        <%= point.name %>
-                  </td>
-                  <td>
-                        <%= point.city.name %>
-                  </td>
-                  <!-- Declarado en el modelo
-            -->
-            <td>
-                  <%= point.description %>
-            </td>
-            <td>
-                  <%= point.minCheckInTime %>
-            </td>
-            <td>
-                  <%  if @points_user.find_by(point_id: point.id, user_id: @user.id) == nil%>
-                        <div='get'>
-                              <%= button_to "check in", user_check_in_path(point.id), :method => "post" %>
-                        </div>
-                  <% end %>
-                  <% if @points_user.find_by(point_id: point.id, user_id: @user.id) %>
-                        <div='use'>
-                              <%= button_to " check out", user_check_out_path(point.id), :method => "post" %>
-                        </div>
-                  <% end %>
-            </td>
-      </tr>
-      <% end %>
-</tbody>
-</table>
+<div class="panel">
+      <div class="title-box">
+            Puntos de interés:
+      </div>
+      <div class="content-box">
+            <table>
+                  <thead>
+                        <tr>
+                              <th>Nombre</th>
+                              <th>Ciudad</th>
+                              <% #Faction %>
+                              <th> Tiempo mínimo de check-in </th>
+                              <th></th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        <% if @points.blank? %>
+                        <tr>
+                              <td colspan="6">
+                                    <em>No se han encontrado puntos de interés</em>
+                              </td>
+                        </tr>
+                        <% end %>
+                        <% @points.each do |p| %>
+                        <tr>
+                              <td>
+                                    <%= p.name %>
+                              </td>
+                              <td>
+                                    <%= p.city.name %>
+                              </td>
+
+                              <td>
+                                    <%= p.minCheckInTime %>
+                              </td>
+                              <td>
+                                    <%=link_to "Más Info", point_path(p.id)%>
+                              </td>
+                              <td>
+                                    <%  if @points_user.find_by(point_id: p.id, user_id: @user.id) == nil%>
+                                    <div class='get'>
+                                          <%= button_to "check in", user_check_in_path(p.id), :method => "post" %>
+                                    </div>
+                                    <% end %>
+                                    <% if @points_user.find_by(point_id: p.id, user_id: @user.id) %>
+                                    <div class='use'>
+                                          <%= button_to " check out", user_check_out_path(p.id), :method => "post" %>
+                                    </div>
+                                    <% end %>
+                              </td>
+                        </tr>
+                        <% end %>
+                  </tbody>
+            </table>
+      </div>
+</div>

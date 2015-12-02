@@ -57,24 +57,21 @@
 
             <div id='sidebar'>
                   <% if(session[:user_id] != nil) %>
-                  <div class='stats'>
-                   <%="Energía: " + User.find_by_id(session[:user_id]).energy.to_s%>
-                </div>
-                <div class='stats'>
-                  <%="Puntaje: " + User.find_by_id(session[:user_id]).score.to_s%>
-                </div>
-                  <div class='button-link'>
-                    <%= link_to "checks", points_path%> <!-- #path a points_user-->
-                    <%= fact = User.find_by_id(session[:user_id])
-                    link_to "Facciones", factions_path #(fact[:id])
-                    %>
-                    <%= link_to "likes", new_user_path %> <!--#nueva tabla intermedia: likes-->
-                    <%= link_to "fotos", new_user_path%> <!-- #nueva tabla intermedia: fotos-->
-                    <%= link_to "videos", new_user_path %> <!--#nueva tabla intermedia: videos-->
-                    <%= link_to "comentarios", new_user_path%> <!-- #nueva tabla intermedia: comentarios en puntos de interés-->
-                    <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
+                        <div class='stats'>
+                             <%="Energía: " + User.find_by_id(session[:user_id]).energy.to_s%>
+                        </div>
+                        <div class='stats'>
+                              <%="Puntaje: " + User.find_by_id(session[:user_id]).score.to_s%>
+                        </div>
+                        <div class='button-link'>
+                                <%= link_to "checks", points_path%> <!-- #path a points_user-->
+                                <%=link_to "Facciones", factions_path%>
+                                <%= link_to "likes", new_user_path %> <!--#nueva tabla intermedia: likes-->
+                                <%= link_to "fotos", new_user_path%> <!-- #nueva tabla intermedia: fotos-->
+                                <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
+                         </div>
                   <% end %>
-              </div>
+
             </div>
             <div id='main'>
               <% flash.each do |name, msg| %>

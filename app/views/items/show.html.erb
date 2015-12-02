@@ -1,0 +1,55 @@
+<div class="panel">
+
+      <div class='info-box'>
+            <div class="title-box">
+                  Información del objeto:
+            </div>
+
+            <div class="content-box">
+                  <% if @item.blank? %>
+                  <tr>
+                        <td colspan="6">
+                              <em>No se ha encontrado el objeto</em>
+                        </td>
+                  </tr>
+                  <% else %>
+                  <table>
+                        <thead>
+                              <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Effectos</th>
+                                    <th></th>
+                                    <th></th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <tr>
+                                    <td>
+                                          <%= @item.name %>
+                                    </td>
+                                    <td>
+                                          <%= @item.description %>
+                                    </td>
+                                    <td>
+                                          <%= @item.effect %>
+                                    </td>
+                                    <td>
+                                          <%= link_to  edit_item_url(@item)  do %>
+                                          <i class="fa fa-pencil"></i>
+                                          <% end %>
+
+                                    </td>
+                                    <td>
+                                          <%= link_to @item, method: :delete, data: {confirm: "¿estás seguro?"} do %>
+                                          <i class="fa fa-times fa-3"></i>
+                                          <% end %>
+
+                                    </td>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </table>
+            </div>
+      </div>
+</div>

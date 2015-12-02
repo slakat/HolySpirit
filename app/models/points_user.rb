@@ -10,7 +10,7 @@
 #
 
 class PointsUser < ActiveRecord::Base
-        belongs_to :point#, foreign_key: 'points_id'
-        belongs_to :user#, foreign_key: 'users_id'
+        belongs_to :point
+        belongs_to :user
 end
 ``

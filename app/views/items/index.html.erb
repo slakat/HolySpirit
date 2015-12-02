@@ -1,22 +1,27 @@
-<h2>Lista de objetos</h2>
+
+<div class="panel">
+            <div class="title-box">
+Objetos existentes:
+</div>
+<div class="content-box">
+
+      <% if @items.blank? %>
+      <tr>
+            <td colspan="6">
+                  <em>No se han encontrado items</em>
+            </td>
+      </tr>
+      <% else %>
 <table>
       <thead>
             <tr>
                   <th>Nombre</th>
                   <th>Descripción</th>
-                  <th>Efectos</th>
-                  <th>Dueño</th>
+                  <th></th>
                   <th></th>
             </tr>
       </thead>
       <tbody>
-            <% if @items.blank? %>
-            <tr>
-                  <td colspan="6">
-                        <em>No se han encontrado items</em>
-                  </td>
-            </tr>
-            <% end %>
             <% @items.each do |item| %>
             <tr>
                   <td>
@@ -26,20 +31,17 @@
                         <%= item.description %>
                   </td>
                   <td>
-                        <%= item.effect %>
+                        <%=link_to "Más Info", item_path(item.id)%>
                   </td>
-                  <td>
-                        <%= item.user.name %>
-                  </td>
+                  <td colspan="10">
 
-                  <td>
                         <%  if @users_item.find_by(item_id: item.id, user_id: @user.id) == nil%>
-                              <div='get'>
+                              <div class='get'>
                                     <%= button_to "get item", user_get_item_path(item.id), :method => "post" %>
                               </div>
                         <% end %>
                         <% if @users_item.find_by(item_id: item.id, user_id: @user.id) %>
-                              <div='use'>
+                              <div class='use'>
                                     <%= button_to "use item", user_use_item_path(item.id), :method => "post" %>
                               </div>
                         <% end %>
@@ -49,3 +51,7 @@
             <% end %>
       </tbody>
 </table>
+<% end %>
+
+</div>
+</div>

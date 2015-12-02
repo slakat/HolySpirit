@@ -1,4 +1,16 @@
-<h1> Lista de facciones </h1>
+<div class="panel">
+            <div class="title-box">
+
+Facciones existentes:
+</div>
+<div class="content-box">
+      <% if @factions.blank? %>
+      <tr>
+            <td colspan="6">
+                  <em>No existen facciones</em>
+            </td>
+      </tr>
+      <% else %>
 <table>
                   <% if @factions != nil %>
       <thead>
@@ -11,13 +23,7 @@
             </tr>
             <tbody>
                   <%end %>
-                  <% if @factions.blank? %>
-                  <tr>
-                        <td colspan="6">
-                              <em>No se han encontrado facciones</em>
-                        </td>
-                  </tr>
-                  <% end %>
+
                   <% @factions.each do |faction| %>
                   <tr>
                         <td><%= faction.name %></td>
@@ -32,3 +38,7 @@
                   </tbody>
             </thead>
       </table>
+      <% end %>
+      
+</div>
+</div>

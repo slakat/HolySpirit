@@ -10,6 +10,7 @@ class PicturesController < ApplicationController
       end
 
       def new
+            
             @picture = Picture.new
       end
 
@@ -17,7 +18,7 @@ class PicturesController < ApplicationController
             @picture = Picture.new(picture_params)
             respond_to do |format|
                   if @picture.save
-                        format.html { redirect_to picture_path(@picture.id), notice: 'La ciudad ha sido creada exitosamente'}
+                        format.html { redirect_to picture_path(@picture.id), notice: 'La imágen ha sido subida con éxito.'}
                         format.json { render action: 'show', status: :created, location: @picture}
                   else
                         format.html {render action: 'new', notice: 'ERRER'}
@@ -34,10 +35,10 @@ class PicturesController < ApplicationController
             @picture = Picture.find(params[:id])
             respond_to do |format|
                   if @picture.update(picture_params)
-                        format.html { redirect_to picture_path(@picture.id), notice: 'la ciudad ha sido actualizada correctamente'}
+                        format.html { redirect_to picture_path(@picture.id), notice: 'la imagen'}
                         format.json { head :no_content}
                   else
-                        format.html {render action: 'edit', notice: 'ERRER'}
+                        format.html {render action: 'edit', notice: 'Error'}
                         format.json {render json:@picture.errors, status: :unprocessable_entity}
                   end
             end
@@ -54,6 +55,6 @@ class PicturesController < ApplicationController
 
       private
       def picture_params
-            params.require(:picture).permit(:id)
+            params.require(:picture).permit(:pic)
       end
 end
