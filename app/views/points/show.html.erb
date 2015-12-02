@@ -56,5 +56,52 @@
                   </table>
             </div>
 
+            <div class='add-pic-button'>
+                  <%= button_to "agregar foto", point_add_pic_path, :method => "get" %>
+            </div>
+      </div>
+
+
+      <div id='picture-point' class="info-box">
+        <div class="title-box">
+
+          Fotos de este lugar:
+        </div>
+
+        <div class="content-box">
+
+          <% if @point.pictures.blank? %>
+              <tr>
+                <td colspan="6">
+                  <em> No existen imágenes.</em>
+                </td>
+              </tr>
+          <% else %>
+              <table>
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>imagen</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @point.pictures.each_with_index do  |p,index |  %>
+
+                    <tr>
+                      <td>
+                        <%= index + 1 %>
+                      </td>
+                      <td>
+                        <%= link_to p do%>
+                      <%= image_tag(p.pic.url(:thumb))%>
+                      <% end %>
+                </td>
+
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+          <% end %>
+        </div>
       </div>
 </div>

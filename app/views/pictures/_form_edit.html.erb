@@ -6,4 +6,9 @@
       <div class="col-md-9">
             <%= f.file_field :pic %>
       </div>
+
+
+      <div class="col-md-9">
+            <%= f.hidden_field :point_id, :value => params[:id] %>
+      </div>
 </div>

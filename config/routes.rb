@@ -98,8 +98,11 @@ Rails.application.routes.draw do
       #do resources :user  no creo que sirva.
 
       resources :points, shallow: true do
+            #get '/check_out', to: 'points#check_out'
             resources :users,  only: [:index]
       end
+      get '/points/:id/add_pic', to: 'pictures#new', as: :point_add_pic
+
 
       resources :pictures
 

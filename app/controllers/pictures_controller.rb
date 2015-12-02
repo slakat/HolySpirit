@@ -10,12 +10,15 @@ class PicturesController < ApplicationController
       end
 
       def new
-            
             @picture = Picture.new
       end
 
       def create
+
             @picture = Picture.new(picture_params)
+            @point = Point.find_by_id(point_parameter[:point_id])
+            @picture.points << @point
+
             respond_to do |format|
                   if @picture.save
                         format.html { redirect_to picture_path(@picture.id), notice: 'La imágen ha sido subida con éxito.'}
@@ -55,6 +58,10 @@ class PicturesController < ApplicationController
 
       private
       def picture_params
-            params.require(:picture).permit(:pic)
+            params.require(:picture).permit(:id, :pic)
       end
+      def point_parameter
+            params.require(:picture).permit(:point_id)
+      end
+
 end

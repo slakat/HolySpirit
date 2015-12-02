@@ -1,47 +1,7 @@
 // Place all the styles related to the Faction controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.panel{
-  margin:10px;
 
-  .info-point-box {
-    width: 40%;
-    margin: 0 auto;
-    display: block;
-    margin-bottom: 20px;
-    padding: 2px 8px;
-
-    .avatar-box img{
-      display: inline;
-      clear: both;
-      border-radius: 200px;
-      box-shadow: 0 0 5px 0 grey;
-    }
-  }
-
-  .info-box {
-    width: 80%;
-    margin: 0 auto;
-    display: block;
-    margin-bottom: 20px;
-    padding: 2px 8px;
-  }
-
-  .title-box {
-    background-color: #004f49;
-    padding: 2px 8px;
-    border: #00ffcc solid 1px;
-    color: #00ffcc;
-    text-align: left;
-    display: table;
-    clear: both;
-  }
-
-  .content-box{
-    padding: 2px 8px;
-    background: #fff;
-    box-shadow: 0 0 5px 0 grey ;
-    margin-left: .02em;
-    min-height: 30px;
-  }
+.add-pic-button{
+      margin-top: 20px;
 }

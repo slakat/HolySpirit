@@ -1,16 +1,18 @@
 <div class="panel">
 
-      <div class='info-user-box'>
+      <div class='info-box'>
 
-            <div class="avatar-box">
+            <div class="title-box">
+                  Imagen de <%= @picture.points.first.name%>
+            </div>
+            <div class="content-box">
+
+            <div class="picture-box">
                   <%if @picture.pic_file_name != nil %>
                   <br>
                   <%= image_tag(@picture.pic.url(:medium))%>
                   <br>
                   <%end%>
-            </div>
-            <div class="title-box">
-                  Imagen de -----
             </div>
 
             <% if !@picture.pic_file_name %>
@@ -24,5 +26,6 @@
                   Eliminar
                   <% end %>
             <% end %>
-      </div>
+      </div><!--FIXME: No hay protección por servidor ni por form de que cualquier persona elimine una foto-->
+</div>
 </div>

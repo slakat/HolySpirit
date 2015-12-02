@@ -2,7 +2,6 @@ class PointsController < ApplicationController
 
 before_action :alter_on_login, only: [:check_in, :check_out, :index]
 
-
       def check_in #hace check in en un punto
             @point = Point.find(params[:user_id])
             @point.users << @user
@@ -21,6 +20,7 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
       def index
             @points_user = PointsUser.all
             @points = Point.all
+            @pictures_point = PicturesPoint.all
       end
 
       def show
@@ -76,7 +76,6 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
                   format.json {head :no_content}
             end
       end
-
 
       # points_users tabla intermedia, relación entre puntos y usuarios.
       def new_checkin
@@ -145,7 +144,6 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
             @point_users = PointsUser.all.where(point_id: params[:id])
             return @point_users.count
       end
-
 
       # Never trust parameters from the scary internet, only allow the white list through.
       private
