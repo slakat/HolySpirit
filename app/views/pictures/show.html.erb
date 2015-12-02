@@ -1,0 +1,33 @@
+<h2>Showing a picture</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Imagen</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @picture.blank? %>
+      <tr>
+        <td colspan="6">
+          <em>No se ha encontrado el punto de interés</em>
+        </td>
+      </tr>
+    <% else %>
+      <tr>
+        <td>
+          <%= image_tag(@picture.pic.url(:medium))%>
+        </td>
+        <td>
+          <%= link_to 'editar', edit_picture_url(@picture) %>
+        </td>
+        <td>
+          <%= link_to [@picture], method: :delete do %>
+            eliminar
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

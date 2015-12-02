@@ -1,40 +1,23 @@
-<h2>Listado de puntos de interés</h2>
+<h2>Listado de imágenes</h2>
 <table>
       <thead>
             <tr>
-                  <th>Nombre</th>
-                  <th>Ciudad</th>
-                  <th>Descripcion</th>
-                  <% #Faction %>
-                  <th>Tiempo mínimo de check-in</th>
-                  <th></th>
+                  <th>Pic</th>
             </tr>
       </thead>
       <tbody>
             <% if @pictures.blank? %>
             <tr>
                   <td colspan="6">
-                        <em>No se han encontrado puntos de interés</em>
+                        <em>No se han encontrado imágenes</em>
                   </td>
             </tr>
             <% end %>
             <% @pictures.each do |picture| %>
             <tr>
                   <td>
-                        <%= picture.name %>
+                        <%= image_tag(picture.pic.url(:thumb)) %>
                   </td>
-                  <td>
-                        <%= picture.city.name %>
-                  </td>
-                  <!-- Declarado en el modelo
-            -->
-            <td>
-                  <%= picture.description %>
-            </td>
-            <td>
-                  <%= picture.minCheckInTime %>
-            </td>
-
       </tr>
       <% end %>
 </tbody>

@@ -22,7 +22,7 @@
                   <tr>
                         <td><%= faction.name %></td>
                         <td><%= faction.city.name %></td>          <!-- Declarado en el modelo  -->
-                        <td><%= faction.administrator.name %></td> <!--TODO: FIXME si un usuario se elimina, la faccion ha de cambiar de admin.-->
+                        <td><%= faction.administrator.name %></td> 
                         <td><%= faction.access %></td>
                         <%  if faction.administrator.id.to_s == @user.id.to_s %>
                         <td><%= link_to 'Perfil de facción', faction_path(faction) %></td>

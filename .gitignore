@@ -20,3 +20,6 @@
 /tmp
 
 /public/system/*
+
+/HolyGhost
+#Esta es mi DB, que inicio con postgres -D HolyGhost, porque me eché postgres.
