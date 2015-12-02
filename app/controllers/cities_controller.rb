@@ -61,8 +61,10 @@ class CitiesController < ApplicationController
 
       def addMayor
             @city = City.find(params[:id])
+            @city.update(city_params)
+
             respond_to do |format|
-                  if @city.update(city_params) #FIXME: Por alguna razón la ciudad conserva su alcalde.
+                  if @city.save? #FIXME: Por alguna razón la ciudad conserva su alcalde.
                         format.html { redirect_to city_path(@city.id), notice: 'la ciudad ha sido actualizada correctamente'}
                         format.json { head :no_content}
                   else

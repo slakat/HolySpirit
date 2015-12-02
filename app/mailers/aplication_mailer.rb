@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'noreply@initiatiweb.com'
+  default from: 'noreply@yisusplusone.com'
   layout 'mailer'
   before_action :set_locale
 

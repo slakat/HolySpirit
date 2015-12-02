@@ -36,11 +36,13 @@ class User < ActiveRecord::Base
       has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: ActionController::Base.helpers.asset_path('/placeholder.gif')
       validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
-      validates :name, presence: true, uniqueness: true, format: { with: /[a-zA-Z0-9]/ }, length: { minimum: 4, maximum: 18 }
+      validates :name, presence: true, uniqueness: true, format: { with: /[a-zA-Z0-9]/ }, length: { minimum: 4 }
       validates :username, presence: true, uniqueness: true, length: { minimum: 4, maximum: 18 }
       #validates :password, presence: true, length: { minimum: 4, maximum: 30 }
 
       validates :email, presence: true, uniqueness: true, format: /\A[a-z0-9\._+-]+@[a-z0-9\._-]+\.[a-z]{1,5}\z/
+
+      before_create :generate_validation_token
 
       def self.authenticate(username, password)
             user = User.where(username: username).first
@@ -51,5 +53,12 @@ class User < ActiveRecord::Base
             end
       end
       has_secure_password
+
+
+      private
+      def generate_validation_token
+            self.validation_token = SecureRandom.urlsafe_base64(50)
+      end
+
 
 end

@@ -1,4 +1,6 @@
-class UsersMailer < ApplicationMailer
+class UsersMailer < ActionMailer::Base
+default from: 'noreply@yisusplusone.com'
+layout 'mailer'
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -7,6 +9,6 @@ class UsersMailer < ApplicationMailer
   #
   def signup(user_id)
     @user = User.find(user_id)
-    mail to: @user.email, subject: 'Valida tu cuenta'
+    mail to: @user.email, subject: 'Valida tu cuenta', from: 'noreply@yisusplusone.com'
   end
 end

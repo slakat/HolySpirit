@@ -35,9 +35,9 @@ class UsersController < ApplicationController
         user = User.find_by(validation_token: params[:token])
         if user
           user.update(validation_token: nil)
-          redirect_to new_session_path, notice: 'Cuenta validada exitosamente'
+          redirect_to log_in_path, notice: 'Cuenta validada exitosamente'
         else
-          redirect_to localized_root_path, alert: 'Link de validación incorrecto'
+          redirect_to root_path, alert: 'Link de validación incorrecto'
         end
       end
 
@@ -63,6 +63,7 @@ class UsersController < ApplicationController
             #
             #      if @user.save
             @user = UserManager.create(user_params) #FIXME, por alguna razón no lo encuentra.
+
             respond_to do |format|
                   if @user.persisted?
                         format.html { redirect_to (log_in_path), notice: 'User was successfully created.' }

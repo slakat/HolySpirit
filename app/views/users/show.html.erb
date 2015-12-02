@@ -1,112 +1,185 @@
-<h2><%=@user.name + ' "' + @user.username%>''</h2>
-<div>
-      <div='info'>
+<div class="panel">
 
-      <%= link_to 'edita tu información de usuario', edit_user_url(@user) if @user == User.all.find_by_id(session[:user_id]) %>
-      <%if @user.avatar_file_name != nil %>
-      <br>
-      <br>
-      Avatar:
-      <br>
-      <%= image_tag(@user.avatar.url(:thumb))%>
-      <br>
-      <%end%>
+    <div class='info-user-box'>
+
+      <div class="avatar-box">
+        <%if @user.avatar_file_name != nil %>
+
+            <br>
+            <%= image_tag(@user.avatar.url(:medium))%>
+            <br>
+        <%end%>
+      </div>
+      <div class="title-box">
+            Información de usuario
+      </div>
+
+      <div class="content-box">
+        <table>
+
+          <thead>
+          <tr>
+            <th colspan="6"></th>
+            <th colspan="6"></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td colspan="6">
+                  <%=@user.name + ' "' + @user.username%>''
+                </td>
+                <td colspan="6">
+                  <%if @user == User.all.find_by_id(session[:user_id])%>
+                      <%= link_to  edit_user_url(@user)  do %>
+                          <i class="fa fa-pencil"></i>
+                      <%end%>
+                      <%end%>
+                </td>
+                <td>
+                    <%= link_to @user, method: :delete, data: {confirm: "¿estás seguro?"} do %>
+                      <i class="fa fa-times fa-3"></i>
+                    <% end %>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+
+      </div>
       <!--</div>-->
       <!--TODO:Hacer un user-points para facciones!!!--->
+    </div>
 
-      <div='user-factions'>
-      <h3>Facciones a las que perteneces:</h3>
-      <table>
-            <thead>
-                  <tr>
-                        <th>Facción</th>
-                        <th></th>
-                  </tr>
-            </thead>
-            <tbody>
-                  <% if @factions_users.blank? %>
-                  <tr>
-                        <td colspan="6">
-                              <em>No perteneces a ninguna facción.</em>
-                        </td>
-                  </tr>
-                  <% end %>
+      <div id='user-factions' class="info-box">
+        <div class="title-box">
 
-                  <% @factions_users.each do |faction| %>
-                  <tr>
-                        <td>
-                              <%=Faction.find(faction.faction_id).name%>
-                        </td>
-                  </tr>
-                  <% end %>
-            </tbody>
-      </table>
+        Facciones a las que perteneces:
+          </div>
+        <div class="content-box">
 
-      <!---->
-      <div='user-points'>
-      <h3>Puntos a los que hiciste check-in:</h3>
-      <table>
-            <thead>
-                  <tr>
-                        <th>Puntos</th>
-                        <th></th>
-                  </tr>
-            </thead>
-            <tbody>
-                  <% if @points_users.blank? %>
-                  <tr>
-                        <td colspan="6">
-                              <em>No tienes puntos.</em>
-                        </td>
-                  </tr>
-                  <% end %>
+          <% if @factions_users.blank? %>
+              <tr>
+                <td colspan="6">
+                  <em>No perteneces a ninguna facción.</em>
+                </td>
+              </tr>
+          <% else %>
+        <table>
 
-                  <% @points_users.each do |point| %>
-                  <tr>
-                        <td>
-                              <%=Point.find(point.point_id).name%>
-                        </td>
-                  </tr>
-                  <% end %>
-            </tbody>
-      </table>
-</div>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Facción</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @factions_users.each_with_index do  |f,index |  %>
+              <tr>
+                <td>
+                    <%= index + 1 %>
+                </td>
+                <td>
+                  <%= f.faction.name %>
+                </td>
+                <td>
+                  <%=link_to "Más Info", faction_path(f.faction)%>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+          <% end %>
+        </div>
+      </div>
 
-<!---->
-<div='item-user'>
-<h3>Items que te pertenecen</h3>
-<table>
-      <thead>
-            <tr>
-                  <th>Item</th>
+      <div id='user-points' class="info-box">
+        <div class="title-box">
+
+          Puntos a los que hiciste check-in recientemente:
+        </div>
+        <div class="content-box">
+
+          <% if @points_users.blank? %>
+              <tr>
+                <td colspan="6">
+                  <em>No has hecho check in recientemente.</em>
+                </td>
+              </tr>
+          <% else %>
+              <table>
+
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Lugar</th>
                   <th></th>
-            </tr>
-      </thead>
-      <tbody>
-            <% if @items_users.blank? %>
-            <tr>
-                  <td colspan="6">
-                        <em>No tienes items.</em>
-                  </td>
-            </tr>
-            <% end %>
-            <% @items_users.each do |item| %>
-            <tr>
-                  <td>
-                        <%=Item.find(item.item_id).name%>
-                  </td>
-            </tr>
-            <% end %>
-      </tbody>
-</table>
-<div='eliminar'> <!-- FIXME: Se hecha parte del css parece-->
-<%= link_to [@user], method: :delete do %>
-eliminar usuario
-<% end %>
-</div>
-</div>
+                </tr>
+                </thead>
+                <tbody>
+                <% @points_users.last(5).each_with_index do  |p,index |  %>
+                    <tr>
+                      <td>
+                        <%= index + 1 %>
+                      </td>
+                      <td>
+                        <%= p.point.name %>
+                      </td>
+                      <td>
+                        <%=link_to "Más Info", point_path(p.point)%>
+                      </td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+          <% end %>
+        </div>
+      </div>
 
-<br>
-<br>
 
-</div>
+
+      <div id='item-user' class="info-box">
+        <div class="title-box">
+
+          Tus items:
+        </div>
+        <div class="content-box">
+
+          <% if @items_users.blank? %>
+              <tr>
+                <td colspan="6">
+                  <em>No te quedan items</em>
+                </td>
+              </tr>
+          <% else %>
+              <table>
+
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Objeto</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @items_users.each_with_index do  |i,index |  %>
+                    <tr>
+                      <td>
+                        <%= index + 1 %>
+                      </td>
+                      <td>
+                        <%= i.item.name %>
+                      </td>
+                      <td>
+                        <%=link_to "Más Info", item_path(i.item)%>
+                      </td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+          <% end %>
+        </div>
+      </div>
+
+
+  </div>

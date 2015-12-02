@@ -13,6 +13,10 @@
 *= require_tree .
 *= require_self
 */
+
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
 html, body {
   padding: 0;
   margin: 0;
@@ -21,11 +25,9 @@ html, body {
 body {
       padding-top: 8vh;
       font-family: Helvetica, Arial, sans-serif;
-      background: #666; /* por motivos de debugueo, el fondo destaca. */
 }
 
 header {
-      padding: 4vh;
       position: fixed;
       /*left: 11%;
       */
@@ -36,24 +38,53 @@ header {
       box-shadow: 0 0 5px 0 black;
       */
       width: 100%;
-      background: #aaa;
+    background: #000;
+    margin: auto;
+    padding-top: 20px;
 }
 #welcome{
       padding: 1%;
-      background: #eee;
       display: inline-block;
       float:left;
       font-family:  "Book Antiqua", "Times New Roman", sans-serif;
       border-radius: 25px;
+      color: #fff;
+    font-size: 20px;
 }
-#boton{
-      margin: 0px 0px 0px 2%;
-      padding: 0.8% 1%;
-      background: #eee;
-      display: inline-block;
-      border: 1%;
-      border-color: #000;
-      border-radius: 20px;
+
+a, a:visited{
+    text-decoration: none;
+    color: currentColor;
+}
+.button-link a, .button-link a:visited{
+    background-color: #004f49;
+    display: block;
+    width: 6em;
+    padding: 2px 8px;
+    border: #00ffcc solid 1px;
+    color: #00ffcc;
+    float: right;
+    margin: 3px 6px;
+    font-size: 80%;
+    text-align: center;
+}
+
+.stats {
+    background-color: #a65617;
+    display: block;
+    padding: 2px 8px;
+    border: #c98b1c solid 1px;
+    color: #ffb023;
+    float: right;
+    margin: 3px 6px;
+    font-size: 80%;
+    text-align: center;
+    min-width: 6em;
+}
+
+#boton:hover, #sidebutton:hover{
+    background: #27966b;
+
 }
 #sessioninit{
       float:right;
@@ -80,32 +111,44 @@ header {
 #content{
       position: relative;
       width: 100%;
-      background: #fff;
-      min-height: 89vh;
+      background: none;
 }
 #sidebar {
-      position: absolute;
+      position: fixed;
       float: left;
       /*padding: 40px 0px 0px 0px;
       */
       width: 10%;
       z-index: 99;
       text-align: center;
-      background: #aaa;
-      min-height: 89vh;
-      max-height: 100%;
-}
-#sidebutton{
-      margin: 5% 10%;
-      padding: 8% 8%;
-      background: #eee;
-      display: inline-block;
-      border-radius: 25px;
+      background: none;
+      height: 100vh;
+    padding-top: 2%;
+    background: #000;
+
 }
 
 #main{
       position: relative;
-      margin-top: 3.3%;
       margin-left: 10%;
       text-align: center;
+      background: #fff8f1;
+}
+
+.alert {
+  font-weight: bold;
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  margin-bottom: 18px;
+  padding: 12px 25px 12px 24px;
+  -moz-box-shadow: 3px 3px 1px 1px #CCCCCC;
+  -webkit-box-shadow: 3px 3px 1px 1px #CCCCCC;
+  box-shadow: 3px 3px 1px 1px #CCCCCC;
+}
+.alert-info {
+  background-color: #e1c33e;
+  border-color: #D6E9C6;
+  color: black;
+  padding-top: 20px;
 }

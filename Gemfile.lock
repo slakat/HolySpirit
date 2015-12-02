@@ -37,6 +37,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.3)
+    awesome_print (1.6.1)
     bcrypt (3.1.10)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
@@ -63,6 +64,8 @@ GEM
     debug_inspector (0.0.2)
     erubis (2.7.0)
     execjs (2.6.0)
+    font-awesome-sass (4.4.0)
+      sass (>= 3.2)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -187,8 +190,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   bcrypt (~> 3.1.7)
   better_errors
+  font-awesome-sass
   haml-rails
   hirb
   jbuilder (~> 2.0)
