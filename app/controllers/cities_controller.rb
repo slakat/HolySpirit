@@ -56,7 +56,9 @@ class CitiesController < ApplicationController
       def newMayor
             @userlist = User.all.map{|u| [u.username, u.id]}
             @city = City.find_by_id(params[:id])         #era @city, no @cities
-            puts @userlist
+            if session[:user_id].to_s == @city.mayor_id.to_s
+                  puts @userlist
+            end
       end
 
       def addMayor
@@ -76,7 +78,7 @@ class CitiesController < ApplicationController
 
       private
       def city_params
-            params.require(:city).permit(:name, :id, :alcalde_id)
+            params.require(:city).permit(:name, :id, :alcalde_id, :skyline)
       end
 
       def require_current_user

@@ -1,36 +1,97 @@
-<h2>Ciudad: <%=@city.name%></h2>
-<table>
-  <thead>
-    <tr>
-      <th>Alcalde</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @city.blank? %>
-      <tr>
-        <td colspan="6">
-          <em>No se ha encontrado esta ciudad</em>
-        </td>
-      </tr>
-    <% else %>
-      <tr>
-        <td>
-          <%= User.find_by_id(@city.mayor_id).username %>
-        </td>
-        <td>
-          <%= link_to 'editar', edit_city_url(@city) %>
-        </td>
-        <td>
-          <%= link_to [@city], method: :delete do %>
-            eliminar
+<div class="panel">
+
+      <div class="skyline-box">
+            <%if @city.skyline_file_name != nil %>
+            <%= image_tag(@city.skyline.url(:medium))%>
+            <%end%>
+      </div>
+      <div class='info-user-box'>
+
+            <div class="title-box">
+                  Información de <%=@city.name%>
+            </div>
+            <div class="content-box">
+                  <table>
+                        <thead>
+                              <tr>
+                                    <th>Alcalde</th>
+                                    <th></th>
+                                    <th></th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <% if @city.blank? %>
+                              <tr>
+                                    <td colspan="6">
+                                          <em>No se ha encontrado esta ciudad</em>
+                                    </td>
+                              </tr>
+                              <% else %>
+                              <tr>
+                                    <td>
+                                          <%= User.find_by_id(@city.mayor_id).username %>
+                                    </td>
+                                    <td>
+                                          <%= link_to 'editar', edit_city_url(@city) %>
+                                    </td>
+                                    <td>
+                                          <%= link_to [@city], method: :delete do %>
+                                          eliminar
+                                          <% end %>
+                                    </td>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </table>
+                  <%if session[:user_id].to_s == @city.mayor_id.to_s %>
+                  <%= link_to 'Agregar/Cambiar Alcalde', newMayor_url(@city) %>
+                  <% end %>
+
+            </div>
+      </div>
+
+            <div class='link-a-ciudades'>
+            <%= link_to 'ir a todas las ciudades', cities_path %>
+      </div>
+
+      <div id='city-point' class="info-box">
+        <div class="title-box">
+             Puntos en esta ciudad
+        </div>
+        <div class="content-box">
+          <% if @city.points.blank? %>
+              <tr>
+                <td colspan="6">
+                  <em>Esta ciudad aún no tiene puntos de interés.</em>
+                </td>
+              </tr>
+          <% else %>
+              <table>
+
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Lugar</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @city.points.each_with_index do  |p,index |  %>
+                    <tr>
+                      <td>
+                        <%= index + 1 %>
+                      </td>
+                      <td>
+                        <%= p.name %>
+                      </td>
+                      <td>
+                        <%=link_to "Más Info", point_path(p)%>
+                      </td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
           <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= link_to 'Agregar/Cambiar Alcalde', newMayor_url(@city) %>
-<br/>
-<%= link_to 'ir a todas las ciudades', cities_path %>
+        </div>
+      </div>
+</div>

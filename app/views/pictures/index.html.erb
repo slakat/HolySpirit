@@ -1,12 +1,11 @@
-<h2>Listado de puntos de interés</h2>
+<div class="panel">
+      <div class="title-box">
+            Ultimas imágenes subidas:
+      </div>
+      <div class="content-box">
 <table>
       <thead>
             <tr>
-                  <th>Nombre</th>
-                  <th>Ciudad</th>
-                  <th>Descripcion</th>
-                  <% #Faction %>
-                  <th>Tiempo mínimo de check-in</th>
                   <th></th>
             </tr>
       </thead>
@@ -18,24 +17,18 @@
                   </td>
             </tr>
             <% end %>
-            <% @pictures.each do |picture| %>
+            <% @pictures.last(5).each_with_index do |p, index| %>
             <tr>
                   <td>
-                        <%= picture.name %>
-                  </td>
-                  <td>
-                        <%= picture.city.name %>
-                  </td>
-                  <!-- Declarado en el modelo
-            -->
-            <td>
-                  <%= picture.description %>
-            </td>
-            <td>
-                  <%= picture.minCheckInTime %>
-            </td>
+                        <%= link_to p do%>
+                        <%= image_tag(p.pic.url(:thumb)) %>
+                        <% end %>
 
-      </tr>
-      <% end %>
-</tbody>
+                  </td>
+            </tr>
+            <% end %>
+      </tbody>
 </table>
+
+</div>
+</div>

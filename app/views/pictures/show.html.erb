@@ -1,0 +1,31 @@
+<div class="panel">
+
+      <div class='info-box'>
+
+            <div class="title-box">
+                  Imagen de <%= @picture.points.first.name%>
+            </div>
+            <div class="content-box">
+
+            <div class="picture-box">
+                  <%if @picture.pic_file_name != nil %>
+                  <br>
+                  <%= image_tag(@picture.pic.url(:medium))%>
+                  <br>
+                  <%end%>
+            </div>
+
+            <% if !@picture.pic_file_name %>
+            <tr>
+                  <td colspan="6">
+                        <em>Esta imágen no existe</em>
+                  </td>
+            </tr>
+            <% else %>
+                  <%= link_to [@picture], method: :delete do %>
+                  Eliminar
+                  <% end %>
+            <% end %>
+      </div><!--FIXME: No hay protección por servidor ni por form de que cualquier persona elimine una foto-->
+</div>
+</div>

@@ -1,0 +1,107 @@
+<div class="panel">
+      <br>
+      <br>
+      <br>
+      <div class='info-box'>
+            <div class="title-box">
+                  Información del punto:
+            </div>
+
+            <div class="content-box">
+                  <table>
+                        <thead>
+                              <tr>
+                                    <th>Nombre</th>
+                                    <th>Ciudad</th>
+                                    <th>Descripción</th>
+                                    <th>Tiempo mínimo de check-in</th>
+                                    <th></th>
+                                    <th></th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <% if @point.blank? %>
+                              <tr>
+                                    <td colspan="6">
+                                          <em>No se ha encontrado el punto de interés</em>
+                                    </td>
+                              </tr>
+                              <% else %>
+                              <tr>
+                                    <td>
+                                          <%= @point.name %>
+                                    </td>
+                                    <td>
+                                          <%= @point.city.name %>
+                                    </td>
+                                    <td>
+                                          <%= @point.description %>
+                                    </td>
+                                    <td>
+                                          <%= @point.minCheckInTime %>
+                                    </td>
+                                    <td>
+                                          <%= link_to  edit_point_url(@point)  do %>
+                                          <i class="fa fa-pencil"></i>
+                                          <% end %>
+                                    </td>
+                                    <td>
+                                          <%= link_to @point, method: :delete, data: {confirm: "¿estás seguro?"} do %>
+                                          <i class="fa fa-times fa-3"></i>
+                                          <% end %>
+                                    </td>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </table>
+            </div>
+
+            <div class='add-pic-button'>
+                  <%= button_to "agregar foto", point_add_pic_path, :method => "get" %>
+            </div>
+      </div>
+
+
+      <div id='picture-point' class="info-box">
+        <div class="title-box">
+
+          Fotos de este lugar:
+        </div>
+
+        <div class="content-box">
+
+          <% if @point.pictures.blank? %>
+              <tr>
+                <td colspan="6">
+                  <em> No existen imágenes.</em>
+                </td>
+              </tr>
+          <% else %>
+              <table>
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>imagen</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @point.pictures.each_with_index do  |p,index |  %>
+
+                    <tr>
+                      <td>
+                        <%= index + 1 %>
+                      </td>
+                      <td>
+                        <%= link_to p do%>
+                      <%= image_tag(p.pic.url(:thumb))%>
+                      <% end %>
+                </td>
+
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+          <% end %>
+        </div>
+      </div>
+</div>

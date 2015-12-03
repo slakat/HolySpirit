@@ -6,15 +6,14 @@
 #  name        :string
 #  description :string
 #  effect      :string
-#  user_id     :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 
-
-#TODO: Remodelar Items para que use la tabla intermedia. De todos modos siempre fue necesario una lista de items.
 class Item < ActiveRecord::Base
-      belongs_to :user
+      has_many :users_items, dependent: :destroy
+      has_many :users, through: :users_items
+
 
       validates :name, presence: true, uniqueness: true
 end

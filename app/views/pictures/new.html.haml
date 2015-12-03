@@ -1,9 +1,7 @@
 .row
-  %h2 Creando un nuevo punto de interés
+  %h2 Sube una foto
   = form_for [@picture], html: {class: 'form-horizontal' } do |f|
-    = render 'form', f: f
-
+    = render 'form_edit', f: f
     %br
-
     .field
-      = f.submit 'Guardar', class:'btn btn-primary pull-right'
+      = f.submit 'Guardar', class:'btn btn-primary'

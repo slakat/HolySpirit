@@ -1,8 +1,8 @@
 class PointsController < ApplicationController
 
+before_action :alter_on_login, only: [:check_in, :check_out, :index]
 
-      def check_in #Une al usuario a la facción y luego redirige a la facción
-            on_login
+      def check_in #hace check in en un punto
             @point = Point.find(params[:user_id])
             @point.users << @user
             @user.score += 40
@@ -11,19 +11,16 @@ class PointsController < ApplicationController
       end
 
       def check_out
-            on_login
             @point = Point.find(params[:user_id])
             @point_user = PointsUser.find_by(user_id: session[:user_id], point_id: params[:user_id])#:user_id = point_id
             @point_user.destroy
             redirect_to points_path
       end
 
-
-
       def index
-            on_login
             @points_user = PointsUser.all
             @points = Point.all
+            @pictures_point = PicturesPoint.all
       end
 
       def show
@@ -96,7 +93,6 @@ class PointsController < ApplicationController
             end
       end
 
-
       # points_users tabla intermedia, relación entre puntos y usuarios.
       def new_checkin
             @point_user = PointsUser.new()
@@ -165,7 +161,6 @@ class PointsController < ApplicationController
             return @point_users.count
       end
 
-
       # Never trust parameters from the scary internet, only allow the white list through.
       private
       def point_params
@@ -180,7 +175,4 @@ class PointsController < ApplicationController
             params.require(:points_user).permit(:point_id, :user_id)
       end
 
-      def on_login
-            @user = User.find(session[:user_id])
-      end
 end

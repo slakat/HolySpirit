@@ -10,6 +10,6 @@
 #
 
 class UsersItem < ActiveRecord::Base
-        belongs_to :item#, foreign_key: 'items_id'
-        belongs_to :user#, foreign_key: 'users_id'
+        belongs_to :item
+        belongs_to :user
 end

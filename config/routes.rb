@@ -98,9 +98,14 @@ Rails.application.routes.draw do
       #do resources :user  no creo que sirva.
 
       resources :points, shallow: true do
+            #get '/check_out', to: 'points#check_out'
             resources :users,  only: [:index]
       end
+<<<<<<< HEAD
       get '/home/map_modal',:defaults =>{:format => 'js'}, to: 'home#map_modal', :as => :map_modal
+=======
+      get '/points/:id/add_pic', to: 'pictures#new', as: :point_add_pic
+>>>>>>> 64f7491f142e4a27325fbc2f35a4a44ca67f5f46
 
 
       resources :pictures
