@@ -1,0 +1,40 @@
+.modal-dialog#map-modal
+  %ul.errors
+  .modal-content
+    = form_for Point.new, remote: true, method:"POST" ,html: {class: 'form-horizontal' } do |f|
+      .modal-body
+        .field
+          .col-md-3
+            = f.label :name, 'Nombre', class: 'control-label'
+          .col-md-9
+            = f.text_field :name, class: 'form-control', required: true
+
+        .field
+          .col-md-3
+            = f.label :city_id, 'Ciudad', class: 'control-label'
+          .col-md-9
+            = f.select :city_id, @cities
+        -#TODO: convertir a enum con el metodo de access en faction.
+
+        .field
+          .col-md-3
+            = f.label :minCheckInTime, 'Tiempo mínimo para el próximo Check-In', class: 'control-label'
+          .col-md-9
+            = f.text_field :minCheckInTime, class: 'form-control', required: true
+
+
+        .field
+          .col-md-3
+            = f.label :description, 'Description', class: 'control-label'
+          .col-md-9
+            = f.text_area :description, class: 'form-control', required: true
+
+        =f.hidden_field :x, id: "point-x"
+        =f.hidden_field :y, id: "point-y"
+
+      .modal-footer
+        = f.submit class: "btn btn-primary"
+        = button_tag "Cancel", class: "btn close-modal", data: {dismiss: "modal"}, onClick: "closeModal()"
+
+
+

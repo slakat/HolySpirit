@@ -27,6 +27,13 @@ class PointsController < ApplicationController
       end
 
       def show
+            #:name => :string,
+            # :city_id => :integer,
+            #:faction_id => :integer,
+            #:minCheckInTime => :integer,
+            #:description => :string,
+            #:x => :float,
+            #:y => :float,
             @point = Point.find(params[:id])
       end
 
@@ -35,18 +42,27 @@ class PointsController < ApplicationController
             @cities = City.all.map{|u| [u.name, u.id]}
       end
 
+
+      def map_create
+
+            @point = Point.new()
+      end
+
       def create
             @point = Point.new(point_params)
-            mayor = City.find_by_id(point_params[:city_id]).alcalde_id
+            mayor = City.find_by_id(point_params[:city_id]).mayor
             respond_to do |format|
                   if mayor == session[:user_id] && @point.save
                         format.html { redirect_to point_path(@point.id), notice: 'El Punto ha sido creado con exito. '}
+                        format.js
                         format.json { render action: 'show', status: :created, location: @point}
                   elsif mayor == nil
                         format.html {redirect_to points_path, notice: 'Esta ciudad no tiene alcalde :('}
+                        format.js
                         format.json {render json:@point.errors, status: :unprocessable_entity}
                   else
                         format.html {redirect_to points_path, notice: 'Debes ser alcalde para hacer esto'}
+                        format.js
                         format.json {render json:@point.errors, status: :unprocessable_entity}
                   end
             end
@@ -153,7 +169,7 @@ class PointsController < ApplicationController
       # Never trust parameters from the scary internet, only allow the white list through.
       private
       def point_params
-            params.require(:point).permit(:name, :minCheckInTime, :city_id, :description, :coordinate_id)
+            params.require(:point).permit(:name, :minCheckInTime, :city_id, :description, :coordinate_id,:x,:y)
       end
 
       def get_mayor(city)

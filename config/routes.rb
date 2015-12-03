@@ -100,6 +100,8 @@ Rails.application.routes.draw do
       resources :points, shallow: true do
             resources :users,  only: [:index]
       end
+      get '/home/map_modal',:defaults =>{:format => 'js'}, to: 'home#map_modal', :as => :map_modal
+
 
       resources :pictures
 

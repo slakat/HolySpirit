@@ -1,0 +1,14 @@
+function closeModal(){
+    $("#map-form").empty();
+    $("#map-form").hide();
+
+}
+var data = $("#cursel").html();
+position =data.split(",");
+x = position[0].split(" ")[2];
+y = position[1];
+$("#map-form").html("<%= j( render partial: 'form_points' )%>");
+$("#point-x").val(x);
+$("#point-y").val(y);
+$("#map-form").show();
+$("#map-modal").modal("show");
