@@ -15,7 +15,7 @@ class UsersController < ApplicationController
                   @user.items << Item.find(params[:user_id])#:user_id = id del item.
                   redirect_to items_path
       end
- 
+
       def use_item
             alter_on_login
             if @user.energy - 100 >= 0
@@ -62,7 +62,7 @@ class UsersController < ApplicationController
             # @user = User.new(user_params)
             #
             #      if @user.save
-            @user = UserManager.create(user_params) #FIXME, por alguna razón no lo encuentra.
+            @user = UserManager.create(user_params) 
 
             respond_to do |format|
                   if @user.persisted?

@@ -31,6 +31,8 @@
                                     <td>
                                           <%= User.find_by_id(@city.mayor_id).username %>
                                     </td>
+                                    <% if @user.id == @city.mayor_id %>
+
                                     <td>
                                           <%= link_to 'editar', edit_city_url(@city) %>
                                     </td>
@@ -39,6 +41,7 @@
                                           eliminar
                                           <% end %>
                                     </td>
+                                    <% end %>
                               </tr>
                               <% end %>
                         </tbody>
@@ -49,11 +52,9 @@
 
             </div>
       </div>
-
             <div class='link-a-ciudades'>
-            <%= link_to 'ir a todas las ciudades', cities_path %>
+            <%= link_to 'volver a todas las ciudades', cities_path %>
       </div>
-
       <div id='city-point' class="info-box">
         <div class="title-box">
              Puntos en esta ciudad

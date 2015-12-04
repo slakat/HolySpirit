@@ -3,37 +3,37 @@
 <head>
       <title>YisusPlusOne</title>
       <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
       <%= csrf_meta_tags %>
 </head>
 <body>
       <header>
 
-                  <% if(session[:user_id] == nil) %>
-                    <div class='button-link'>
-                        <%=     link_to 'Nuevo Usuario', new_user_path%>
-                    </div>
-                  <%end%>
+            <% if(session[:user_id] == nil) %>
+            <div class='button-link'>
+                  <%=     link_to 'Nuevo Usuario', new_user_path%>
+            </div>
+            <%end%>
 
-              <%  if(session[:user_id] != nil)  %>
-                     <div class="button-link">
-                        <%= link_to 'Log Out', '/log-out' %>
-                     </div>
-                   <% else %>
-                        <div class="button-link">
-                        <%= link_to 'Log In' , '/log-in' %>
-                      </div>
-                   <%end %>
+            <%  if(session[:user_id] != nil)  %>
+            <div class="button-link">
+                  <%= link_to 'Log Out', '/log-out' %>
+            </div>
+            <% else %>
+            <div class="button-link">
+                  <%= link_to 'Log In' , '/log-in' %>
+            </div>
+            <%end %>
 
-                  <% if session[:user_id] %>
-                    <div class='stats'>
-                        <%= "Has iniciado sesión como " + User.find_by_id(session[:user_id]).username %>
-                    </div>
-                  <% else %>
-                    <div class='stats'>
-                        <%= "No has iniciado sesión." %>
-                    </div>
-                 <% end  %>
+            <% if session[:user_id] %>
+            <div class='stats'>
+                  <%= "Has iniciado sesión como " + User.find_by_id(session[:user_id]).username %>
+            </div>
+            <% else %>
+            <div class='stats'>
+                  <%= "No has iniciado sesión." %>
+            </div>
+            <% end  %>
 
             <div class='button-link'>
                   <%= link_to "Home", root_path%>
@@ -57,26 +57,27 @@
 
             <div id='sidebar'>
                   <% if(session[:user_id] != nil) %>
-                        <div class='stats'>
-                             <%="Energía: " + User.find_by_id(session[:user_id]).energy.to_s%>
-                        </div>
-                        <div class='stats'>
-                              <%="Puntaje: " + User.find_by_id(session[:user_id]).score.to_s%>
-                        </div>
-                        <div class='button-link'>
-                                <%= link_to "checks", points_path%> <!-- #path a points_user-->
-                                <%=link_to "Facciones", factions_path%>
-                                <%= link_to "likes", new_user_path %> <!--#nueva tabla intermedia: likes-->
-                                <%= link_to "fotos", pictures_path%> <!-- #nueva tabla intermedia: fotos-->
-                                <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
-                         </div>
+                  <div class='stats'>
+                        <%="Energía: " + User.find_by_id(session[:user_id]).energy.to_s%>
+                  </div>
+                  <div class='stats'>
+                        <%="Puntaje: " + User.find_by_id(session[:user_id]).score.to_s%>
+                  </div>
+                  <div class='button-link'>
+                        <%= link_to "usuarios", users_path %>
+                        <%= link_to "ciudades", cities_path %>
+                        <%=link_to "facciones", factions_path%>
+                        <%= link_to "checks", points_path%> <!-- #path a points_user-->
+                        <%= link_to "fotos", pictures_path%> <!-- #nueva tabla intermedia: fotos-->
+                        <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
+                  </div>
                   <% end %>
 
             </div>
             <div id='main'>
-              <% flash.each do |name, msg| %>
+                  <% flash.each do |name, msg| %>
                   <%= content_tag :div, msg, class: "alert alert-info" %>
-              <% end %>
+                  <% end %>
 
                   <br> <!-- VERY IMPORTANT. For aesthetical reasons.-->
                   <%= yield %>

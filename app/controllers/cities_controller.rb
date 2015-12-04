@@ -1,6 +1,7 @@
 class CitiesController < ApplicationController
 
       before_action :require_current_user, only: [ :edit, :update, :destroy]
+      before_action :alter_on_login, only: [:show]
 
       def index
             @cities = City.all
