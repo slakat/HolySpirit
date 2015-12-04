@@ -10,3 +10,25 @@
       clear: both;
       border-radius: 100px;
 }
+
+#map-modal{
+  position: fixed;
+  background: #004F49;
+  width: 50%;
+  z-index: 2;
+  left: 25%;
+  border: 1px solid #0FC;
+  color: #0fc;
+  top: 13%;
+  padding: 10px;
+}
+
+#map-form{
+  width: 99vw;
+  height: 100vh;
+  z-index: 1;
+  margin-left: -10%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  position: fixed;
+}

@@ -24,6 +24,13 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
       end
 
       def show
+            #:name => :string,
+            # :city_id => :integer,
+            #:faction_id => :integer,
+            #:minCheckInTime => :integer,
+            #:description => :string,
+            #:x => :float,
+            #:y => :float,
             @point = Point.find(params[:id])
       end
 
@@ -32,19 +39,36 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
             @cities = City.all.map{|u| [u.name, u.id]}
       end
 
+
+      def map_create
+
+            @point = Point.new()
+      end
+
       def create
             @point = Point.new(point_params)
-            mayor = City.find_by_id(point_params[:city_id]).alcalde_id
+            mayor = City.find_by_id(point_params[:city_id]).mayor
             respond_to do |format|
-                  if mayor == session[:user_id] && @point.save
-                        format.html { redirect_to point_path(@point.id), notice: 'El Punto ha sido creado con exito. '}
-                        format.json { render action: 'show', status: :created, location: @point}
+                  if mayor != session[:user_id]
+                        if  @point.save
+                              format.html { redirect_to point_path(@point.id), notice: 'El Punto ha sido creado con exito. '}
+                              format.js
+                              format.json { render action: 'show', status: :created, location: @point}
+                        else
+                              format.html { redirect_to point_path(@point.id), notice: 'Errores en la información '}
+                              format.js
+                              format.json { render json:@point.errors, status: :unprocessable_entity}
+                        end
+
                   elsif mayor == nil
                         format.html {redirect_to points_path, notice: 'Esta ciudad no tiene alcalde :('}
+                        format.js {@point.errors[:base] <<  'Esta ciudad no tiene alcalde :(' }
                         format.json {render json:@point.errors, status: :unprocessable_entity}
                   else
-                        format.html {redirect_to points_path, notice: 'Debes ser alcalde para hacer esto'}
+
+                        format.js {@point.errors[:base] << 'Debes ser alcalde para hacer esto' }
                         format.json {render json:@point.errors, status: :unprocessable_entity}
+                        format.html {redirect_to points_path, notice: 'Debes ser alcalde para hacer esto'}
                   end
             end
       end
@@ -83,6 +107,13 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
             @point = [params[:id]]
             @users = User.all.map{|u| [u.name, u.id]}
             @points = Point.all.map{|u| [u.name, u.id]}
+      end
+
+      def checkpoints
+      end
+
+      def all
+            render json: Point.all.as_json
       end
 
       def create_checkin
@@ -148,7 +179,7 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
       # Never trust parameters from the scary internet, only allow the white list through.
       private
       def point_params
-            params.require(:point).permit(:name, :minCheckInTime, :city_id, :description, :coordinate_id)
+            params.require(:point).permit(:name, :minCheckInTime, :city_id, :description, :coordinate_id,:x,:y)
       end
 
       def get_mayor(city)

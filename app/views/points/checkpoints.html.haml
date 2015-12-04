@@ -1,0 +1,368 @@
+/ NOTE: two libraries to load are comma-separated; otherwise last mention of the query string arg overwrites the previous
+%script{:src => "http://maps.google.com/maps/api/js?sensor=false&v=3.21.5a&libraries=drawing&signed_in=true&libraries=places,drawing", :type => "text/javascript"}
+
+
+:javascript
+  // Place all the behaviors and hooks related to the matching controller here.
+  // All this logic will automatically be available in application.js.
+
+  var drawingManager;
+  var selectedShape;
+  var colors =['#1E90FF'];// ['#1E90FF', '#FF1493', '#32CD32', '#FF8C00', '#4B0082'];
+  var selectedColor;
+  var colorButtons = {};
+
+  function getPoints(map){
+      $.getJSON('/checkpoints/all',{
+      }, function(data){
+            for (var index = 0; index < data.length; ++index) {
+                points.push(data[index]);
+                var place = data[index];
+
+              var latLng = {lat:place.x , lng: place.y};
+              // Create a marker for each place.
+              var marker = new google.maps.Marker({
+                map: map,
+                title: place.name,
+                position: latLng,
+                id: place.id,
+                checktime: place.minCheckInTime,
+                city_id: place.city_id
+              });
+               marker.addListener('click', function() {
+               infoWindow.setContent(place.name+": "+place.description);
+                infoWindow.open(map, marker);
+              });
+               google.maps.event.addListener(marker, 'click', function() {
+            setSelection(map,marker, false);
+        });
+
+        placeMarkers.push(marker);
+            }
+          return data;
+      });
+
+  }
+
+  function clearSelection() {
+    if (selectedShape) {
+      if (typeof selectedShape.setEditable == 'function') {
+        selectedShape.setEditable(false);
+      }
+      selectedShape = null;
+    }
+    //curseldiv.innerHTML = "<b>cursel</b>:";
+  }
+
+  function updateCurSelText(shape) {
+    posstr = "" + selectedShape.position;
+    if (typeof selectedShape.position == 'object') {
+      posstr = selectedShape.position.toUrlValue(6);
+    }
+    pathstr = "" + selectedShape.getPath;
+    if (typeof selectedShape.getPath == 'function') {
+      pathstr = "[ ";
+      for (var i = 0; i < selectedShape.getPath().getLength(); i++) {
+        // .toUrlValue(5) limits number of decimals, default is 6 but can do more
+        pathstr += "{"+selectedShape.getPath().getAt(i).toUrlValue(6) + "}, ";
+      }
+      pathstr += "]";
+    }
+    bndstr = "" + selectedShape.getBounds;
+    cntstr = "" + selectedShape.getBounds;
+    if (typeof selectedShape.getBounds == 'function') {
+      var tmpbounds = selectedShape.getBounds();
+      cntstr = "" + tmpbounds.getCenter().toUrlValue(6);
+      bndstr = "[NE: " + tmpbounds.getNorthEast().toUrlValue(6) + " SW: " + tmpbounds.getSouthWest().toUrlValue(6) + "]";
+    }
+    cntrstr = "" + selectedShape.getCenter;
+    if (typeof selectedShape.getCenter == 'function') {
+      cntrstr = "" + selectedShape.getCenter().toUrlValue(6);
+    }
+    radstr = "" + selectedShape.getRadius;
+    if (typeof selectedShape.getRadius == 'function') {
+      radstr = "" + selectedShape.getRadius();
+    }
+    //curseldiv.innerHTML = "<b>cursel</b>: " + selectedShape.type + " " + selectedShape + "; <i>pos</i>: " + posstr + " ; <i>path</i>: " + pathstr + " ; <i>bounds</i>: " + bndstr + " ; <i>Cb</i>: " + cntstr + " ; <i>radius</i>: " + radstr + " ; <i>Cr</i>: " + cntrstr ;
+    curseldiv.innerHTML = "<i>Punto actual</i>: " + posstr;
+    path_form = document.getElementById('coordinates');
+    path_form.value = pathstr;
+  }
+
+  function setSelection(map,shape, isNotMarker) {
+    clearSelection();
+    selectedShape = shape;
+    pos = ""+selectedShape.position;
+    if (typeof selectedShape.position == 'object') {
+      posstr = selectedShape.position.toUrlValue(6);
+    }
+    if (isNotMarker)
+      shape.setEditable(true);
+    else{
+      // Opens the InfoWindow when marker is clicked.
+      shape.addListener('click', function() {
+        infoWindow.setContent(pos);
+        $("#button-map-modal").show();
+        infoWindow.open(map, shape);
+      });
+    }
+    selectColor(shape.get('fillColor') || shape.get('strokeColor'));
+    updateCurSelText(shape);
+    distanceMatrix(shape)
+  }
+
+    function distanceMatrix(marker){
+    var origin1 = "Yo";
+    var origin2 = initialLocation;
+    var destinationA = "Checkpoint";
+    var destinationB = marker.position;
+
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [origin1, origin2],
+        destinations: [destinationA, destinationB],
+        travelMode: google.maps.TravelMode.WALKING,
+
+      }, callback);
+
+    function callback(response, status) {
+      console.log(response);
+      if (status == google.maps.DistanceMatrixStatus.OK) {
+        var origins = response.originAddresses;
+        var destinations = response.destinationAddresses;
+
+          var results = response.rows[1].elements;
+            var element = results[1];
+            var distance = element.distance.value;
+            var duration = element.duration.value;
+            if (distance < 1000){
+              $("button-map-modal").show();
+            }
+            else{
+              $("button-map-modal").hide();
+            }
+
+            alert(element.distance.text);
+            alert(element.duration.text);
+
+      }
+    }
+  }
+
+  function deleteSelectedShape() {
+    if (selectedShape) {
+      selectedShape.setMap(null);
+    }
+  }
+
+  function selectColor(color) {
+    selectedColor = color;
+    for (var i = 0; i < colors.length; ++i) {
+      var currColor = colors[i];
+      colorButtons[currColor].style.border = currColor == color ? '2px solid #789' : '2px solid #fff';
+    }
+
+
+  }
+
+  function setSelectedShapeColor(color) {
+    if (selectedShape) {
+      if (selectedShape.type == google.maps.drawing.OverlayType.POLYLINE) {
+        selectedShape.set('strokeColor', color);
+      } else {
+        selectedShape.set('fillColor', color);
+      }
+    }
+  }
+
+  function makeColorButton(color) {
+    var button = document.createElement('span');
+    button.className = 'color-button';
+    button.style.backgroundColor = color;
+    google.maps.event.addDomListener(button, 'click', function() {
+      selectColor(color);
+      setSelectedShapeColor(color);
+    });
+
+    return button;
+  }
+
+  function buildColorPalette() {
+    var colorPalette = document.getElementById('color-palette');
+    for (var i = 0; i < colors.length; ++i) {
+      var currColor = colors[i];
+      var colorButton = makeColorButton(currColor);
+      colorPalette.appendChild(colorButton);
+      colorButtons[currColor] = colorButton;
+    }
+    selectColor(colors[0]);
+  }
+
+  /////////////////////////////////////
+  var map; //= new google.maps.Map(document.getElementById('map'), {
+  // these must have global refs too!:
+  var placeMarkers = [];
+  var infoWindow;
+  var points=[];
+  var input;
+  var searchBox;
+  var curposdiv;
+  var curseldiv;
+  var initialLocation;
+
+  function deletePlacesSearchResults() {
+    for (var i = 0, marker; marker = placeMarkers[i]; i++) {
+      marker.setMap(null);
+    }
+    placeMarkers = [];
+    input.value = ''; // clear the box too
+  }
+
+  /////////////////////////////////////
+  function checkpoints() {
+    $("#button-map-modal").toggle();
+    // Construct a new InfoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      content: ""
+    });
+
+    var dcc = new google.maps.LatLng(-33.49898904086727, -70.61518728733063);
+    var browserSupportFlag =  new Boolean();
+
+    map = new google.maps.Map(document.getElementById('map'), { //var
+      zoom: 18,//10,
+      center: new google.maps.LatLng(22.338,114.057),//(22.344, 114.048),
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: false,
+      zoomControl: true
+    });
+    curposdiv = document.getElementById('curpos');
+    curseldiv = document.getElementById('cursel');
+
+
+   // Try W3C Geolocation (Preferred)
+    if(navigator.geolocation) {
+      browserSupportFlag = true;
+      navigator.geolocation.getCurrentPosition(function(position) {
+        initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+        map.setCenter(initialLocation);
+      }, function() {
+        handleNoGeolocation(browserSupportFlag);
+      });
+    }
+    // Browser doesn't support Geolocation
+    else {
+      browserSupportFlag = false;
+      handleNoGeolocation(browserSupportFlag);
+    }
+
+    function handleNoGeolocation(errorFlag) {
+      if (errorFlag == true) {
+        alert("La Geolocalización no funciona :(.");
+        initialLocation = dcc;
+      } else {
+        alert("Tu navegador no soporta geolocalización. Te ubicamos en el DCC.");
+        initialLocation = dcc;
+      }
+      map.setCenter(initialLocation);
+    }
+
+      var places = getPoints(map);
+
+    // Clear the current selection when the drawing mode is changed, or when the
+    // map is clicked.
+
+    google.maps.event.addListener(map, 'click', clearSelection);
+    google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
+
+    buildColorPalette();
+
+    //~ initSearch();
+    // Create the search box and link it to the UI element.
+    input = /** @type {HTMLInputElement} */( //var
+      document.getElementById('pac-input'));
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
+    //
+    var DelPlcButDiv = document.createElement('div');
+    //~ DelPlcButDiv.style.color = 'rgb(25,25,25)'; // no effect?
+    DelPlcButDiv.style.backgroundColor = '#fff';
+    DelPlcButDiv.style.cursor = 'pointer';
+    DelPlcButDiv.innerHTML = 'DEL';
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(DelPlcButDiv);
+    google.maps.event.addDomListener(DelPlcButDiv, 'click', deletePlacesSearchResults);
+
+    searchBox = new google.maps.places.SearchBox( //var
+    /** @type {HTMLInputElement} */(input));
+
+    // Listen for the event fired when the user selects an item from the
+    // pick list. Retrieve the matching places for that item.
+    google.maps.event.addListener(searchBox, 'places_changed', function() {
+      var places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+      for (var i = 0, marker; marker = placeMarkers[i]; i++) {
+        marker.setMap(null);
+      }
+
+      // For each place, get the icon, place name, and location.
+      placeMarkers = [];
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0, place; place = places[i]; i++) {
+        var image = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        var marker = new google.maps.Marker({
+          map: map,
+          icon: image,
+          title: place.name,
+          position: place.geometry.location
+
+        });
+
+        placeMarkers.push(marker);
+
+        bounds.extend(place.geometry.location);
+      }
+
+      map.fitBounds(bounds);
+    });
+
+    // Bias the SearchBox results towards places that are within the bounds of the
+    // current map's viewport.
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      var bounds = map.getBounds();
+      searchBox.setBounds(bounds);
+    //curposdiv.innerHTML = "<b>curpos</b> Z: " + map.getZoom() + " C: " + map.getCenter().toUrlValue(6);
+    }); //////////////////////
+  }
+  google.maps.event.addDomListener(window, 'load', checkpoints);
+
+
+#map-form
+
+#panel
+  #color-palette
+  %div
+    %button#delete-button Borrar Marcador seleccionado
+  #curpos
+  #cursel
+  %br
+  %br
+  =button_to 'Check in',"", :method => "post", id: "button-map-modal"
+  #note
+  %br
+  %br
+  #coordinates
+  %br
+
+%input#pac-input{:placeholder => "Buscar lugar", :type => "text"}/
+#map A

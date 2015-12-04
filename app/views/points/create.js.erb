@@ -1,0 +1,9 @@
+$("ul.errors").html("");
+<% if @point.errors.any? %>
+<% @point.errors.full_messages.each do |message| %>
+$("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
+<% end %>
+<% else %>
+$("#map-modal").empty();
+$("#map-modal").html("<h1>Tu punto se ha agregado.</h1>")
+<% end %>
