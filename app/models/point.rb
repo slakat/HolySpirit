@@ -29,4 +29,11 @@ class Point < ActiveRecord::Base
       has_many :pictures, through: :pictures_points
 
       validates :city, presence: true
+      validates :name, presence: true
+      validates :minCheckInTime, presence: true,
+                numericality: true,
+                format: { :with => /\A\d{1,4}?\z/ }
+      validates_uniqueness_of :name
+      #validates_uniqueness_of :x, :scope => [:y]
+
 end
