@@ -36,4 +36,17 @@ class Point < ActiveRecord::Base
       validates_uniqueness_of :name
       #validates_uniqueness_of :x, :scope => [:y]
 
+      def as_json(options={})
+            {
+                id:           self.id,
+                name:         self.name,
+                description:  self.description,
+                x:            self.x,
+                y:            self.y,
+                checktime:    self.minCheckInTime,
+                city_id:      self.city_id
+
+            }
+      end
+
 end

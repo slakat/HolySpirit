@@ -49,7 +49,7 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
             @point = Point.new(point_params)
             mayor = City.find_by_id(point_params[:city_id]).mayor
             respond_to do |format|
-                  if mayor == session[:user_id]
+                  if mayor != session[:user_id]
                         if  @point.save
                               format.html { redirect_to point_path(@point.id), notice: 'El Punto ha sido creado con exito. '}
                               format.js
@@ -107,6 +107,13 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
             @point = [params[:id]]
             @users = User.all.map{|u| [u.name, u.id]}
             @points = Point.all.map{|u| [u.name, u.id]}
+      end
+
+      def checkpoints
+      end
+
+      def all
+            render json: Point.all.as_json
       end
 
       def create_checkin
