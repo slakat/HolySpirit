@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
       #agregar metodos repetidos para ser heredados para DRY
 
       private
-      def faction_params
-            params.require(:faction).permit(:name, :administrator_id, :city_id, :access)
-      end
+      #def faction_params
+      #      params.require(:faction).permit(:name, :administrator_id, :city_id, :access)
+      #end
       def register_params
             params.require(:factions_user).permit(:faction_id, :user_id)
       end

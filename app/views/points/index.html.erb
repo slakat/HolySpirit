@@ -8,15 +8,14 @@
                         <tr>
                               <th>Nombre</th>
                               <th>Ciudad</th>
-                              <% #Faction %>
+                              <% #Faction_id %>
                               <th> Tiempo mínimo de check-in </th>
-                              <th></th>
                         </tr>
                   </thead>
                   <tbody>
                         <% if @points.blank? %>
                         <tr>
-                              <td colspan="6">
+                              <td >
                                     <em>No se han encontrado puntos de interés</em>
                               </td>
                         </tr>
@@ -24,17 +23,14 @@
                         <% @points.each do |p| %>
                         <tr>
                               <td>
-                                    <%= p.name %>
+                                    <%= link_to "#{p.name}", p %>
                               </td>
                               <td>
-                                    <%= p.city.name %>
+                                    <%= link_to "#{p.city.name}", p.city %>
                               </td>
 
                               <td>
                                     <%= p.minCheckInTime %>
-                              </td>
-                              <td>
-                                    <%=link_to "Más Info", point_path(p.id)%>
                               </td>
                               <td>
                                     <%  if @points_user.find_by(point_id: p.id, user_id: @user.id) == nil%>

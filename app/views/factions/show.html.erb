@@ -24,7 +24,7 @@
                         <tbody>
                               <% if @faction.blank? %>
                               <tr>
-                                    <td colspan="6">
+                                    <td >
                                           <em>No se ha encontrado la facción</em>
                                     </td>
                               </tr>
@@ -44,7 +44,6 @@
                                               <%= link_to  edit_faction_url(@faction)  do %>
                                                   <i class="fa fa-pencil"></i>
                                                   <%end%>
-
                                     </td>
                                     <td>
                                           <%= link_to @faction, method: :delete, data: {confirm: "¿estás seguro?"} do %>
@@ -52,7 +51,6 @@
                                           <% end %>
                                     </td>
                                     <% end %>
-
                               </tr>
                               <% end %>
                         </tbody>

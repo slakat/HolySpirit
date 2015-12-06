@@ -3,7 +3,7 @@
       <div class='info-box'>
 
             <div class="title-box">
-                  Imagen de <%= @picture.points.first.name%>
+                  Imagen de <%= link_to "#{@picture.points.first.name}",  @picture.points.first%> <!--  TODO: ojalá cambiar el modelo para que una foto solo tenga un punto. -->
             </div>
             <div class="content-box">
 
@@ -17,7 +17,7 @@
 
             <% if !@picture.pic_file_name %>
             <tr>
-                  <td colspan="6">
+                  <td >
                         <em>Esta imágen no existe</em>
                   </td>
             </tr>

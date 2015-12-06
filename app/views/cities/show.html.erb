@@ -8,7 +8,7 @@
       <div class='info-user-box'>
 
             <div class="title-box">
-                  Información de <%=@city.name%>
+                  Información de <%=link_to "#{@city.name}", @city%>
             </div>
             <div class="content-box">
                   <table>
@@ -22,23 +22,24 @@
                         <tbody>
                               <% if @city.blank? %>
                               <tr>
-                                    <td colspan="6">
+                                    <td >
                                           <em>No se ha encontrado esta ciudad</em>
                                     </td>
                               </tr>
                               <% else %>
                               <tr>
                                     <td>
-                                          <%= User.find_by_id(@city.mayor_id).username %>
+                                          <%= link_to "#{@users.find_by_id(@city.mayor_id).username}", @users.find_by_id(@city.mayor_id) %>
                                     </td>
                                     <% if @user.id == @city.mayor_id %>
-
                                     <td>
-                                          <%= link_to 'editar', edit_city_url(@city) %>
+                                          <%= link_to  edit_city_url(@city)  do %>
+                                          <i class="fa fa-pencil"></i>
+                                          <%end%>
                                     </td>
                                     <td>
-                                          <%= link_to [@city], method: :delete do %>
-                                          eliminar
+                                          <%= link_to @city, method: :delete, data: {confirm: "¿estás seguro?"} do %>
+                                          <i class="fa fa-times fa-3"></i>
                                           <% end %>
                                     </td>
                                     <% end %>
@@ -52,47 +53,43 @@
 
             </div>
       </div>
-            <div class='link-a-ciudades'>
+      <div class='link-a-ciudades'>
             <%= link_to 'volver a todas las ciudades', cities_path %>
       </div>
       <div id='city-point' class="info-box">
-        <div class="title-box">
-             Puntos en esta ciudad
-        </div>
-        <div class="content-box">
-          <% if @city.points.blank? %>
-              <tr>
-                <td colspan="6">
-                  <em>Esta ciudad aún no tiene puntos de interés.</em>
-                </td>
-              </tr>
-          <% else %>
-              <table>
+            <div class="title-box">
+                  Puntos en esta ciudad
+            </div>
+            <div class="content-box">
+                  <% if @city.points.blank? %>
+                  <tr>
+                        <td >
+                              <em>Esta ciudad aún no tiene puntos de interés.</em>
+                        </td>
+                  </tr>
+                  <% else %>
+                  <table>
 
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Lugar</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <% @city.points.each_with_index do  |p,index |  %>
-                    <tr>
-                      <td>
-                        <%= index + 1 %>
-                      </td>
-                      <td>
-                        <%= p.name %>
-                      </td>
-                      <td>
-                        <%=link_to "Más Info", point_path(p)%>
-                      </td>
-                    </tr>
-                <% end %>
-                </tbody>
-              </table>
-          <% end %>
-        </div>
+                        <thead>
+                              <tr>
+                                    <th>#</th>
+                                    <th>Lugar</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <% @city.points.each_with_index do  |p,index |  %>
+                              <tr>
+                                    <td>
+                                          <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                          <%= link_to " #{p.name}", p %>
+                                    </td>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </table>
+                  <% end %>
+            </div>
       </div>
 </div>

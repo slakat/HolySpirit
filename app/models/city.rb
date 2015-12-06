@@ -2,11 +2,15 @@
 #
 # Table name: cities
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  mayor_id   :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                   :integer          not null, primary key
+#  name                 :string
+#  mayor_id             :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  skyline_file_name    :string
+#  skyline_content_type :string
+#  skyline_file_size    :integer
+#  skyline_updated_at   :datetime
 #
 
 class City < ActiveRecord::Base

@@ -18,9 +18,10 @@ class Point < ActiveRecord::Base
       belongs_to :city
       belongs_to :faction
 
-
       #has_many :points_faction
       #has_many :faction, through: :points_faction
+
+      has_many :comments
 
       has_many :points_users, dependent: :destroy
       has_many :users, through: :points_users

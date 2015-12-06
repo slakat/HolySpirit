@@ -2,23 +2,27 @@
 #
 # Table name: users
 #
-#  id                  :integer          not null, primary key
-#  name                :string
-#  username            :string
-#  score               :integer          default(0)
-#  energy              :integer          default(100)
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  password_digest     :string
-#  avatar_file_name    :string
-#  avatar_content_type :string
-#  avatar_file_size    :integer
-#  avatar_updated_at   :datetime
-#  email               :string
-#  validation_token    :string
+#  id                       :integer          not null, primary key
+#  name                     :string
+#  username                 :string
+#  score                    :integer          default(0)
+#  energy                   :integer          default(100)
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  password_digest          :string
+#  avatar_file_name         :string
+#  avatar_content_type      :string
+#  avatar_file_size         :integer
+#  avatar_updated_at        :datetime
+#  email                    :string
+#  validation_token         :string
+#  administrated_city_id    :integer
+#  administrated_faction_id :integer
 #
 
 class User < ActiveRecord::Base
+
+      has_many :comments
 
       has_many :users_items, dependent: :destroy
       has_many :items, through: :users_items

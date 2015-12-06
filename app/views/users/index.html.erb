@@ -6,7 +6,7 @@
       <div class="content-box">
             <% if @users.blank? %>
             <tr>
-                  <td colspan="6">
+                  <td >
                         <em>No se han encontrado usuarios en el juego</em>
                   </td>
             </tr>
@@ -16,21 +16,17 @@
                         <tr>
                               <th>Nombre</th>
                               <th>Username</th>
-                              <th></th>
                         </tr>
                   </thead>
                   <tbody>
 
-                        <% @users.each do |user| %>
+                        <% @users.each do |u| %>
                         <tr>
                               <td>
-                                    <%= user.name %>
+                                    <%= link_to "#{u.name}", u %>
                               </td>
                               <td>
-                                    <%= user.username %>
-                              </td>
-                              <td>
-                                    <%= link_to 'ir a mi perfil', user_path(user) if user.id == session[:user_id] %>
+                                    <%= link_to "#{u.username}", u %>
                               </td>
                         </tr>
                         <% end %>
@@ -39,9 +35,7 @@
       </div>
       <% end %>
 
-      <%
-else #FIXME: mala prácitca? Debe haber un modo mejor. 2 vistas?
-      %>
+      <%else  %>
 
       <div class="title-box">
             Usuarios pertenecientes a <%=@faction.name%>
@@ -49,7 +43,7 @@ else #FIXME: mala prácitca? Debe haber un modo mejor. 2 vistas?
       <div class="content-box">
             <% if @faction.users.blank? %>
             <tr>
-                  <td colspan="6">
+                  <td ="6">
                         <em>Esta facción no registra usuarios</em>
                   </td>
             </tr>
@@ -59,21 +53,17 @@ else #FIXME: mala prácitca? Debe haber un modo mejor. 2 vistas?
                         <tr>
                               <th>Nombre</th>
                               <th>Username</th>
-                              <th></th>
                         </tr>
                   </thead>
                   <tbody>
 
-                        <% @faction.users.each do |user| %>
+                        <% @faction.users.each do |u| %>
                         <tr>
                               <td>
-                                    <%= user.name %>
+                                    <%= link_to "#{u.name}", u %>
                               </td>
                               <td>
-                                    <%= user.username %>
-                              </td>
-                              <td>
-                                    <%= link_to 'ir a mi perfil', user_path(user) if user.id == session[:user_id] %>
+                                    <%=link_to "#{u.username}", u %>
                               </td>
                         </tr>
                         <% end %>

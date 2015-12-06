@@ -1,8 +1,10 @@
 class FactionsController < ApplicationController
 
+before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
+
       def join #Une al usuario a la facción y luego redirige a la facción
             this_faction_id
-            @faction.users << User.find(session[:user_id])
+            @faction.users << @user
             redirect_to faction_path(@faction)
       end
 
@@ -33,13 +35,9 @@ class FactionsController < ApplicationController
       def index
             @factions = Faction.all
             #modificado para mostrar solo las facciones de un usuario.
-            if params[:user_id] == nil
-                  alter_on_login
-            end
       end
 
       def show
-            alter_on_login
             @faction = Faction.find(params[:id])
       end
 
@@ -53,8 +51,11 @@ class FactionsController < ApplicationController
 
       def create
             @faction = Faction.new(faction_params)
+            @faction.administrator = @user
             respond_to do |format|
                   if @faction.save
+                        #join
+                        @faction.users << @user
                         format.html { redirect_to faction_path(@faction.id), notice: 'La facción ha sido creada exitosamente'}
                         format.json { render action: 'show', status: :created, location: @faction}
                   else
@@ -105,14 +106,14 @@ class FactionsController < ApplicationController
 
       private
       def faction_params
-            params.require(:faction).permit(:name, :administrator_id, :city_id, :access, :logo)
+            params.require(:faction).permit(:name, :administrator_id, :city_id, :access, :logo, :administrator)
       end
       def register_params
             params.require(:factions_user).permit(:faction_id, :user_id)
       end
-
       def this_faction_id
             @faction = Faction.find(params[:faction_id])
       end
+
 
 end

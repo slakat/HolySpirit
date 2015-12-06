@@ -10,11 +10,8 @@
             = f.text_field :name, class: 'form-control', required: true
 
         .field
-          .col-md-3
-            = f.label :city_id, 'Ciudad', class: 'control-label'
           .col-md-9
-            = f.select :city_id, @cities
-        -#TODO: convertir a enum con el metodo de access en faction.
+            = f.hidden_field :city_id, :value => @user.administrated_city
 
         .field
           .col-md-3

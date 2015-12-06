@@ -1,6 +1,8 @@
 class PointsController < ApplicationController
 
-before_action :alter_on_login, only: [:check_in, :check_out, :index]
+before_action :alter_on_login, only: [:check_in, :check_out, :index, :new]
+before_action :requiere_city_mayor, only: [:edit, :update, :destroy ]
+
 
       def check_in #hace check in en un punto
             @point = Point.find(params[:user_id])
@@ -86,7 +88,7 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
                         format.json { head :no_content}
 
                   else
-                        format.html {render action: 'edit', notice: 'ERRER'}
+                        format.html {render action: 'edit', notice: 'Error'}
                         format.json {render json:@point.errors, status: :unprocessable_entity}
                   end
             end
@@ -188,6 +190,14 @@ before_action :alter_on_login, only: [:check_in, :check_out, :index]
 
       def checkin_params
             params.require(:points_user).permit(:point_id, :user_id)
+      end
+
+      def requiere_city_mayor
+            alter_on_login
+            @point = Point.find(params[:id])
+            if @point.city.mayor != @user
+                  redirect_to points_path, notice: 'No puedes editar este punto sin ser el alcalde'
+            end
       end
 
 end

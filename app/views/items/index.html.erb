@@ -1,57 +1,51 @@
 
 <div class="panel">
-            <div class="title-box">
-Objetos existentes:
-</div>
-<div class="content-box">
-
-      <% if @items.blank? %>
-      <tr>
-            <td colspan="6">
-                  <em>No se han encontrado items</em>
-            </td>
-      </tr>
-      <% else %>
-<table>
-      <thead>
+      <div class="title-box">
+            Objetos existentes:
+      </div>
+      <div class="content-box">
+            <% if @items.blank? %>
             <tr>
-                  <th>Nombre</th>
-                  <th>Descripción</th>
-                  <th></th>
-                  <th></th>
-            </tr>
-      </thead>
-      <tbody>
-            <% @items.each do |item| %>
-            <tr>
-                  <td>
-                        <%= item.name %>
-                  </td>
-                  <td>
-                        <%= item.description %>
-                  </td>
-                  <td>
-                        <%=link_to "Más Info", item_path(item.id)%>
-                  </td>
-                  <td colspan="10">
-
-                        <%  if @users_item.find_by(item_id: item.id, user_id: @user.id) == nil%>
-                              <div class='get'>
-                                    <%= button_to "get item", user_get_item_path(item.id), :method => "post" %>
-                              </div>
-                        <% end %>
-                        <% if @users_item.find_by(item_id: item.id, user_id: @user.id) %>
-                              <div class='use'>
-                                    <%= button_to "use item", user_use_item_path(item.id), :method => "post" %>
-                              </div>
-                        <% end %>
-
+                  <td >
+                        <em>No se han encontrado items</em>
                   </td>
             </tr>
+            <% else %>
+            <table>
+                  <thead>
+                        <tr>
+                              <th>Nombre</th>
+                              <th>Descripción</th>
+                              <th></th>
+                              <th></th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        <% @items.each do |i| %>
+                        <tr>
+                              <td>
+                                    <%= link_to "#{i.name}", i %>
+                              </td>
+                              <td>
+                                    <%= i.description %>
+                              </td>
+                              <td>
+                                    <%  if @users_item.find_by(item_id: i.id, user_id: @user.id) == nil%>
+                                    <div class='get'>
+                                          <%= button_to "get item", user_get_item_path(i.id), :method => "post" %>
+                                    </div>
+                                    <% end %>
+                                    <% if @users_item.find_by(item_id: i.id, user_id: @user.id) %>
+                                    <div class='use'>
+                                          <%= button_to "use item", user_use_item_path(i.id), :method => "post" %>
+                                    </div>
+                                    <% end %>
+                              </td>
+                        </tr>
+                        <% end %>
+                  </tbody>
+            </table>
             <% end %>
-      </tbody>
-</table>
-<% end %>
 
-</div>
+      </div>
 </div>

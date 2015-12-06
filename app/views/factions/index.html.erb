@@ -1,44 +1,42 @@
 <div class="panel">
-            <div class="title-box">
 
-Facciones existentes:
-</div>
-<div class="content-box">
-      <% if @factions.blank? %>
-      <tr>
-            <td colspan="6">
-                  <em>No existen facciones</em>
-            </td>
-      </tr>
-      <% else %>
-<table>
-                  <% if @factions != nil %>
-      <thead>
+      <div class ="create-button">
+            <%= link_to "¡Crea una faccion!", new_faction_path %>
+      </div>
+      <div class="title-box">
+            Facciones existentes:
+      </div>
+      <div class="content-box">
+            <% if @factions.blank? %>
             <tr>
-                  <th>Nombre</th>
-                  <th>Ciudad</th>
-                  <th>Administrador</th>
-                  <th>Acceso</th>
-                  <th></th>
+                  <td>
+                        <em>No existen facciones</em>
+                  </td>
             </tr>
-            <tbody>
-                  <%end %>
-
-                  <% @factions.each do |faction| %>
-                  <tr>
-                        <td><%= faction.name %></td>
-                        <td><%= faction.city.name %></td>          <!-- Declarado en el modelo  -->
-                        <td><%= faction.administrator.name %></td> <!--TODO: FIXME si un usuario se elimina, la faccion ha de cambiar de admin.-->
-                        <td><%= faction.access %></td>
-                        <%  if faction.administrator.id.to_s == @user.id.to_s %>
-                        <td><%= link_to 'Perfil de facción', faction_path(faction) %></td>
+            <% else %>
+            <table>
+                  <% if @factions != nil %>
+                  <thead>
+                        <tr>
+                              <th>Nombre</th>
+                              <th>Ciudad</th>
+                              <th>Administrador</th>
+                              <th>Acceso</th>
                         </tr>
-                        <% end %>
-                        <% end %>
-                  </tbody>
-            </thead>
-      </table>
-      <% end %>
-      
-</div>
+                        <tbody>
+                              <%end %>
+
+                              <% @factions.each do |f| %>
+                              <tr>
+                                    <td><%= link_to  "#{f.name}", f %></td>
+                                    <td><%= link_to "#{f.city.name}", f.city %></td>          <!-- Declarado en el modelo  -->
+                                    <td><%= link_to "#{f.administrator.name}", f.administrator %></td>
+                                    <td><%= f.access %></td>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </thead>
+            </table>
+            <% end %>
+      </div>
 </div>

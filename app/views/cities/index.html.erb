@@ -9,27 +9,23 @@
                         <tr>
                               <th>Nombre</th>
                               <th>Alcalde</th>
-                              <th></th>
                         </tr>
                   </thead>
                   <tbody>
                         <% if @cities.blank? %>
                         <tr>
-                              <td colspan="6">
+                              <td>
                                     <em>No se han encontrado ciudades</em>
                               </td>
                         </tr>
                         <% end %>
-                        <% @cities.each do |city| %>
+                        <% @cities.each do |c| %>
                         <tr>
                               <td>
-                                    <%= city.name %>
+                                    <%= link_to "#{c.name}", city_path(c) %>
                               </td>
                               <td>
-                                    <%= User.find(city.mayor_id).username %>
-                              </td>
-                              <td>
-                                    <%= link_to 'más info', city_path(city)%>
+                                    <%= link_to "#{@users.find(c.mayor_id).username}",@users.find(c.mayor_id) %>
                               </td>
                         </tr>
                         <% end %>
