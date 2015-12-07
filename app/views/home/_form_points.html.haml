@@ -1,3 +1,5 @@
+= @user = User.find(session[:user_id])
+-# Estoy haciendo trampa, pero no se carga desde el controller. FIXME.
 .modal-dialog#map-modal
   %ul.errors
   .modal-content
@@ -11,7 +13,7 @@
 
         .field
           .col-md-9
-            = f.hidden_field :city_id, :value => @user.administrated_city
+            = f.hidden_field :city_id, :value => @user.administrated_city_id
 
         .field
           .col-md-3

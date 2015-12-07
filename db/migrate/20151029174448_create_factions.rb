@@ -3,8 +3,8 @@ class CreateFactions < ActiveRecord::Migration
             create_table :factions do |t|
 
                   t.string :name
-                  t.references :administrator
-                  t.references :city
+                  t.belongs_to :administrator
+                  t.belongs_to :city
                   t.string :access
 
                   t.timestamps null: false

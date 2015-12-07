@@ -20,9 +20,9 @@ class CitiesController < ApplicationController
       def create
             @city = City.new(city_params)
             @city.mayor = User.find_by_id(session[:user_id]) #TODO: Temporary, solo un sysadmin puede hacerlo.
-            @user.administrated_city = @city
             respond_to do |format|
-                  if @city.save
+                  if @city.save!
+                        @user.administrated_city_id = @city.id
                         @user.save!
                         format.html { redirect_to city_path(@city.id), notice: 'La ciudad ha sido creada exitosamente'}
                         format.json { render action: 'show', status: :created, location: @city}

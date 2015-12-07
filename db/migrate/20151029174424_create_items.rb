@@ -5,7 +5,7 @@ class CreateItems < ActiveRecord::Migration
                   t.string :name
                   t.string :description
                   t.string :effect
-                  t.references :user
+            
 
                   t.timestamps null: false
             end
