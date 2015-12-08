@@ -1,5 +1,21 @@
 <div class="panel">
 
+      <%if User.find(session[:user_id]) != @user && User.find(session[:user_id]).administrated_faction_id%>
+            <%@faction = Faction.find(User.find(session[:user_id]).administrated_faction_id)%>
+            <%if @faction.access == 'closed' && !FactionsUser.find_by(user_id: @user.id, faction_id: @faction.id)%>
+
+                  <div class="invitacion-faccion">
+
+                        <%= hidden_field :user_id, :value => params[:id] %>
+                        <%=
+                        #button_to "Invita a #{@user.name} a tu facción", faction_join_closed_path(@faction.id), :method => "post" 
+                        %>
+
+                  </div>
+            <%end%>
+      <%end%>
+
+
       <div class='info-user-box'>
 
             <div class="avatar-box">

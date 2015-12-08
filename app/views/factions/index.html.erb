@@ -1,8 +1,10 @@
 <div class="panel">
 
-      <div class ="create-button">
-            <%= link_to "¡Crea una faccion!", new_faction_path %>
+      <%if @user.administrated_faction_id == nil%>
+      <div class ="link-a-nueva-fac">
+            <%= link_to "¡Crea tu faccion!", new_faction_path %>
       </div>
+      <%end %>
       <div class="title-box">
             Facciones existentes:
       </div>
@@ -29,8 +31,8 @@
                               <% @factions.each do |f| %>
                               <tr>
                                     <td><%= link_to  "#{f.name}", f %></td>
-                                    <td><%= link_to "#{f.city.name}", f.city %></td>          <!-- Declarado en el modelo  -->
-                                    <td><%= link_to "#{f.administrator.name}", f.administrator %></td>
+                                    <td><%= link_to "#{f.city.name}", f.city %></td>
+                                    <td><%= link_to "#{f.administrator.username}", f.administrator %></td>
                                     <td><%= f.access %></td>
                               </tr>
                               <% end %>

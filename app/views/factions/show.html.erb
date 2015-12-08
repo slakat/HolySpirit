@@ -59,26 +59,35 @@
       </div>
 
       <%if session[:user_id]%>
-      <%if @faction.users.find_by_id(session[:user_id]) == nil%>
-      <div class='subscribirse'>
-            <%= button_to "Subscribirse", faction_join_path(@faction.id), :method => "post" %>
-      </div>
-      <%end%>
+            <%if @faction.users.find_by_id(session[:user_id]) == nil && @user.administrated_faction_id == nil && @user.administrated_city_id == nil %>
+                  <div class='subscribirse'>
+                        <%if @faction.access == 'public'%>
+                              <%= button_to "Subscribirse", faction_join_public_path(@faction.id), :method => "post" %>
+                        <%elsif @faction.access == 'private'%>
+                              <%= button_to "Subscribirse", faction_join_private_path(@faction.id), :method => "post" %>
+                        <%end%>
+
+
+                  </div>
+            <%end%>
       <%end%>
 
       <%if @faction.users.find_by_id(session[:user_id]) != nil%>
-      <div class='retirarse'>
-            <%= button_to "retirarse", faction_leave_path(@faction.id), :method => "post" %>
-      </div>
-      <br>
-      <div class='content-box'>
-            <% if @faction.administrator_id.to_s == @user.id.to_s %>
-            Eres administrador de esta facción.
-            <%else%>
-
-            <%= 'Eres miembro de esta facción. '%>
-            <%end%>
-      </div>
+            <div class='retirarse'>
+                  <%= button_to "retirarse", faction_leave_path(@faction.id), :method => "post" %>
+            </div>
+            <br>
+            <div class='content-box'>
+                  <% if @faction.administrator_id.to_s == @user.id.to_s %>
+                        Eres administrador de esta facción.
+                  <%elsif FactionsUser.find_by(user_id: session[:user_id], faction_id: params[:id]).waiting_approval = 1%>
+                        <%= 'El administrador debe aprobarte para que seas miembro. '%>
+                  <%elsif FactionsUser.find_by(user_id: session[:user_id], faction_id: params[:id]).invited = 1%>
+                        <%= 'Has sido invitado a esta facción, pero el administrador aún debe aprobarte. '%>
+                  <%else%>
+                        <%= 'Eres miembro de esta facción. '%>
+                  <%end%>
+            </div>
       <%end%>
 
 </div>

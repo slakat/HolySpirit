@@ -1,5 +1,6 @@
 class PicturesController < ApplicationController
       #before_action :require_current_user
+      before_action :require_login, except: [:index, :show]
 
       def index
             @pictures = Picture.all
@@ -11,6 +12,7 @@ class PicturesController < ApplicationController
 
       def new
             @picture = Picture.new
+            @point = Point.find(params[:id])
       end
 
       def create

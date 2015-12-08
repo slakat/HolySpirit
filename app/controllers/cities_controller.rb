@@ -1,5 +1,7 @@
 class CitiesController < ApplicationController
 
+      before_action :require_login, except: [:index, :show]
+
       before_action :alter_on_login, only: [:show, :create]
       before_action :requiere_city_mayor, only: [:edit, :update, :destroy]
       before_action :current_city, only: [:show, :edit, :update, :destroy, :new_mayor, :add_mayor]
@@ -15,11 +17,12 @@ class CitiesController < ApplicationController
 
       def new
             @city = City.new
+
       end
 
       def create
             @city = City.new(city_params)
-            @city.mayor = User.find_by_id(session[:user_id]) #TODO: Temporary, solo un sysadmin puede hacerlo.
+            @city.mayor = User.find_by_id(session[:user_id])     #FIXME: Temporary, solo un sysadmin puede hacerlo.
             respond_to do |format|
                   if @city.save!
                         @user.administrated_city_id = @city.id
@@ -57,6 +60,7 @@ class CitiesController < ApplicationController
       end
 
       def new_mayor
+            @city = City.find(params[:id])
             @userlist = User.all.map{|u| [u.username, u.id]}
             if session[:user_id].to_s == @city.mayor_id.to_s
                   puts @userlist
@@ -64,9 +68,11 @@ class CitiesController < ApplicationController
       end
 
       def add_mayor
+            @city = City.find(params[:id])
+
             @city.update(city_params)
             respond_to do |format|
-                  if @city.save?
+                  if @city.save!
                         format.html { redirect_to city_path(@city.id), notice: 'la ciudad ha sido actualizada correctamente'}
                         format.json { head :no_content}
                   else

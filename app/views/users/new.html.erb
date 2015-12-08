@@ -1,13 +1,17 @@
+<div class="form-row">
+      <div class="form-title">
+            ¡Únete a CityConquest!
+      </div>
+      <h5>Tu username debe tener entre 4 y 30 caracteres.</h5>
+      <h5>La clave no es case sensitive</h5>
 <div class="row">
-  <h2>Creando un nuevo usuario</h2>
-  <h5>Tu username debe tener entre 4 y 30 caracteres.</h5>
-  <h5>La clave no es case sensitive</h5>
+
   <%= form_for [@user], html: {class: 'form-horizontal' } do |f| %>
     <%= render 'form', f: f %>
-
     <br/>
     <div class="field">
       <%= f.submit 'Guardar', class:'btn btn-primary' %>
     </div>
   <% end %>
+</div>
 </div>

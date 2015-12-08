@@ -1,89 +1,94 @@
 <!DOCTYPE html>
 <html>
-<head>
-      <title>YisusPlusOne</title>
-      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
-      <%= csrf_meta_tags %>
-</head>
-<body>
-      <header>
+      <head>
+            <title>YisusPlusOne</title>
+            <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
+            <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
+            <%= csrf_meta_tags %>
+      </head>
+      <body>
+            <header>
+                  <%if session[:user_id]
+                  @user = User.find(session[:user_id])
+                  end
+                  %>
 
-            <% if(session[:user_id] == nil) %>
-            <div class='button-link'>
-                  <%=     link_to 'Nuevo Usuario', new_user_path%>
-            </div>
-            <%end%>
 
-            <%  if(session[:user_id] != nil)  %>
-            <div class="button-link">
-                  <%= link_to 'Log Out', '/log-out' %>
-            </div>
-            <% else %>
-            <div class="button-link">
-                  <%= link_to 'Log In' , '/log-in' %>
-            </div>
-            <%end %>
+                  <% if(session[:user_id] == nil) %>
+                        <div class='button-link'>
+                              <%=     link_to 'Nuevo Usuario', new_user_path%>
+                        </div>
+                  <%end%>
 
-            <% if session[:user_id] %>
-            <div class='stats'>
-                  <%= "Has iniciado sesión como " + User.find_by_id(session[:user_id]).username %>
-            </div>
-            <% else %>
-            <div class='stats'>
-                  <%= "No has iniciado sesión." %>
-            </div>
-            <% end  %>
+                  <%  if(session[:user_id] != nil)  %>
+                        <div class="button-link">
+                              <%= link_to 'Log Out', '/log-out' %>
+                        </div>
+                  <% else %>
+                        <div class="button-link">
+                              <%= link_to 'Log In' , '/log-in' %>
+                        </div>
+                  <%end %>
 
-            <div class='button-link'>
-                  <%= link_to "Home", root_path%>
-            </div>
+                  <% if session[:user_id] %>
+                        <div class='stats'>
+                              <%= "Has iniciado sesión como " + User.find_by_id(session[:user_id]).username %>
+                        </div>
+                  <% else %>
+                        <div class='stats'>
+                              <%= "No has iniciado sesión." %>
+                        </div>
+                  <% end  %>
 
-            <% if(session[:user_id] != nil) %>
-            <div class='button-link'>
-                  <%= link_to "Perfil", user_path(session[:user_id])%>
-            </div>
-            <%end %>
-
-            <% if(session[:user_id] != nil) %>
-            <% end %>
-
-            <div id='welcome'>
-                  <%= link_to "CityConquest", game_path%>
-            </div>
-      </header>
-
-      <div id='content'>
-
-            <div id='sidebar'>
-                  <% if(session[:user_id] != nil) %>
-                  <div class='stats'>
-                        <%="Energía: " + User.find_by_id(session[:user_id]).energy.to_s%>
-                  </div>
-                  <div class='stats'>
-                        <%="Puntaje: " + User.find_by_id(session[:user_id]).score.to_s%>
-                  </div>
                   <div class='button-link'>
-                        <%= link_to "usuarios", users_path %>
-                        <%= link_to "ciudades", cities_path %>
-                        <%=link_to "facciones", factions_path%>
-                        <%= link_to "checks", points_path%> <!-- #path a points_user-->
-                        <%= link_to "fotos", pictures_path%> <!-- #nueva tabla intermedia: fotos-->
-                        <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
+                        <%= link_to "Home", root_path%>
                   </div>
-                  <% end %>
 
+                  <% if(session[:user_id] != nil) %>
+                        <div class='button-link'>
+                              <%= link_to "Perfil", user_path(session[:user_id])%>
+                        </div>
+                  <%end %>
+
+                  <div id='welcome'>
+                        <%if @user != nil && @user.gm%>
+                              <%= link_to "CityConquest", game_path%>
+                                    <%else%>
+                              <%= link_to "CityConquest", game_path%>
+                        <%end%>
+                  </div>
+            </header>
+
+            <div id='content'>
+                  <div id='sidebar'>
+                        <% if(session[:user_id] != nil) %>
+                        <div class='stats'>
+                              <%="Energía: " + User.find_by_id(session[:user_id]).energy.to_s%>
+                        </div>
+                        <div class='stats'>
+                              <%="Puntaje: " + User.find_by_id(session[:user_id]).score.to_s%>
+                        </div>
+                        <div class='button-link'>
+                              <%= link_to "usuarios", users_path %>
+                              <%= link_to "ciudades", cities_path %>
+                              <%=link_to "facciones", factions_path%>
+                              <%= link_to "checks", points_path%> <!-- #path a points_user-->
+                              <%= link_to "fotos", pictures_path%> <!-- #nueva tabla intermedia: fotos-->
+                              <%= link_to "items", items_path %> <!-- #tabla intermedia: items-->
+                        </div>
+                        <% end %>
+
+                  </div>
+                  <div id='main'>
+                        <% flash.each do |name, msg| %>
+                              <%= content_tag :div, msg, class: "alert alert-info" %>
+                        <% end %>
+
+                        <br> <!-- VERY IMPORTANT. For aesthetical reasons.-->
+                        <%= yield %>
+
+                  </div>
             </div>
-            <div id='main'>
-                  <% flash.each do |name, msg| %>
-                  <%= content_tag :div, msg, class: "alert alert-info" %>
-                  <% end %>
 
-                  <br> <!-- VERY IMPORTANT. For aesthetical reasons.-->
-                  <%= yield %>
-
-            </div>
-      </div>
-
-</body>
+      </body>
 </html>

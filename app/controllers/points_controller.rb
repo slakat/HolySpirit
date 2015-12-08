@@ -1,7 +1,8 @@
 class PointsController < ApplicationController
 
-before_action :alter_on_login, only: [:check_in, :check_out, :index, :new]
+before_action :alter_on_login, only: [:check_in, :check_out, :index, :new, :show]
 before_action :requiere_city_mayor, only: [:edit, :update, :destroy ]
+before_action :require_login, except: [:index, :show]
 
 
       def check_in #hace check in en un punto
@@ -34,11 +35,12 @@ before_action :requiere_city_mayor, only: [:edit, :update, :destroy ]
             #:x => :float,
             #:y => :float,
             @point = Point.find(params[:id])
+            @doc = OpenDocumentService.new
+            @related_resources = @doc.get_documents_for(@point.x, @point.y, 10)
       end
 
       def new
             @point = Point.new
-            @cities = City.all.map{|u| [u.name, u.id]}
       end
 
 
@@ -199,5 +201,6 @@ before_action :requiere_city_mayor, only: [:edit, :update, :destroy ]
                   redirect_to points_path, notice: 'No puedes editar este punto sin ser el alcalde'
             end
       end
+      #TODO: block creation of points
 
 end

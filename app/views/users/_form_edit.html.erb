@@ -1,35 +1,34 @@
-<div class="field">
-      <div class="col-md-3">
-            <%= f.label :name, 'Nombre', class: 'control-label' %>
+<div class="form-content-box">
+      <div class="field">
+            <div class="col-md-3">
+                  <%= f.label :name, 'Nombre', class: 'control-label' %>
+            </div>
+            <div class="col-md-9">
+                  <%= f.text_field :name, class: 'form-control' %>
+            </div>
       </div>
-      <div class="col-md-9">
-            <%= f.text_field :name, class: 'form-control' %>
+      <div class="field">
+            <div class="col-md-3">
+                  <%= f.label :username, 'Username', class: 'control-label' %>
+            </div>
+            <div class="col-md-9">
+                  <%= f.text_field :username, class: 'form-control' %>
+            </div>
       </div>
-</div>
-<div class="field">
-      <div class="col-md-3">
-            <%= f.label :username, 'Username', class: 'control-label' %>
+      <div class="field">
+            <div class="col-md-3">
+                  <%= f.label :email, 'e-mail', class: 'control-label' %>
+            </div>
+            <div class="col-md-9">
+                  <%= f.text_field :email, class: 'form-control' %>
+            </div>
       </div>
-      <div class="col-md-9">
-            <%= f.text_field :username, class: 'form-control' %>
-      </div>
-</div>
-<div class="field">
-      <div class="col-md-3">
-            <%= f.label :email, 'e-mail', class: 'control-label' %>
-      </div>
-      <div class="col-md-9">
-            <%= f.text_field :email, class: 'form-control' %>
-      </div>
-</div>
-
-<br>
-
-<div class="field">
-      <div class="col-md-3">
-            <%= f.label :avatar, 'cambia tu foto de perfil', class: 'control-label' %>
-      </div>
-      <div class="col-md-9">
-            <%= f.file_field :avatar %>
+      <div class="field">
+            <div class="col-md-3">
+                  <%= f.label :avatar, 'cambia tu foto de perfil', class: 'control-label' %>
+            </div>
+            <div class="col-md-9">
+                  <%= f.file_field :avatar %>
+            </div>
       </div>
 </div>

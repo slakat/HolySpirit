@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+before_action :unantheuticated_user, only: [:create]
+
       #referencia: http://nycda.com/blog/basic-user-authentication-model-in-rails-4/
       def new
             if(session[:user_id] != nil) #Evita el intento de login cuando ya hay login.
@@ -31,4 +33,11 @@ class SessionsController < ApplicationController
       def sign_in(user)
             session[:user_id] = user.id
       end
+
+def unantheuticated_user
+      if User.find_by(username: params[:username]).validation_token != nil
+            redirect_to root_path, notice: 'Debes validar tu cuenta a través de email primero.'
+      end
+end
+
 end

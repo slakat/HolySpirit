@@ -29,12 +29,17 @@ class ApplicationController < ActionController::Base
       end
 
       def require_login
-            redirect_to root_path if session[:user_id] == nil
+             if session[:user_id] == nil
+                  redirect_to root_path, notice: 'Necesitas estar logueado para realizar esta acción'
+            end
       end
 
       def require_logout
-            redirect_to root_path if session[:user_id] != nil
+            if session[:user_id] != nil
+                 redirect_to root_path, notice: 'Necesitas estar deslogueado para realizar esta acción'
+          end
       end
+
 
 
 end

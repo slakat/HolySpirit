@@ -14,11 +14,20 @@
 .link-a-ciudades {
       background-color: #004f49;
       display: inline;
-      width: 6em;
-      padding: 2px 8px;
+      width: 10em;
+      padding: 8px 20px;
       border: #00ffcc solid 1px;
       color: #00ffcc;
-      float: center;
+      margin: 3px 6px;
+      border-radius: 30px;
+}
+.link-a-nueva-fac {
+      background-color: #004f49;
+      display: inline-block;
+      width: 10em;
+      padding: 8px 20px;
+      border: #00ffcc solid 1px;
+      color: #00ffcc;
       margin: 3px 6px;
       border-radius: 30px;
 }

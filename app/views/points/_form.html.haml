@@ -1,22 +1,24 @@
-.field
-  .col-md-3
-    = f.label :name, 'Nombre', class: 'control-label'
-  .col-md-9
-    = f.text_field :name, class: 'form-control', required: true
+.form-content-box
+
+      .col-md-9
+            = f.hidden_field :city_id, :value => @user.administrated_city_id
+
+      .field
+            .col-md-3
+                  = f.label :name, 'Nombre', class: 'control-label'
+            .col-md-9
+                  = f.text_field :name, class: 'form-control', required: true
 
 
-  .col-md-9
-    = f.hidden_field :city_id, :value => @user.administrated_city_id
-
-.field
-  .col-md-3
-    = f.label :minCheckInTime, 'Tiempo mínimo para el próximo Check-In', class: 'control-label'
-  .col-md-9
-    = f.text_field :minCheckInTime, class: 'form-control', required: true
+      .field
+            .col-md-3
+                  = f.label :minCheckInTime, 'Tiempo mínimo para el próximo Check-In', class: 'control-label'
+            .col-md-9
+                  = f.text_field :minCheckInTime, class: 'form-control', required: true
 
 
-.field
-  .col-md-3
-    = f.label :description, 'Description', class: 'control-label'
-  .col-md-9
-    = f.text_area :description, class: 'form-control', required: true
+      .field
+            .col-md-3
+                  = f.label :description, 'Description', class: 'control-label'
+            .col-md-9
+                  = f.text_area :description, class: 'form-control', required: true

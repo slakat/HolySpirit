@@ -3,15 +3,14 @@ class UsersController < ApplicationController
       before_action :require_current_user, only: [ :edit, :update, :destroy] #, :get_item, :use_item] falla el require por el id de la url.
       #before_action :alter_on_login, only [:get_item, :use_item]
       #http://nycda.com/blog/basic-user-authentication-model-in-rails-4/
-
-      before_action :require_logout, only: [:new]
+      before_action :require_login, except: [:index, :show, :new, :create, :validate]
+      before_action :require_logout, only: [:new, :create]
 
       def get_item
             alter_on_login
             #if @user.energy  - 100 > 0
                   @user.energy += 100
                   @user.save!
-
                   @user.items << Item.find(params[:user_id])#:user_id = id del item.
                   redirect_to items_path
       end
@@ -34,10 +33,10 @@ class UsersController < ApplicationController
       def validate
         user = User.find_by(validation_token: params[:token])
         if user
-          user.update(validation_token: nil)
-          redirect_to log_in_path, notice: 'Cuenta validada exitosamente'
+          user.update(validation_token: nil) #TODO: session imposible con validation_token != null
+          redirect_to log_in_path, notice: 'Cuenta validada exitosamente.'
         else
-          redirect_to root_path, alert: 'Link de validación incorrecto'
+          redirect_to root_path, alert: 'Link de validación incorrecto.'
         end
       end
 
@@ -62,11 +61,11 @@ class UsersController < ApplicationController
             # @user = User.new(user_params)
             #
             #      if @user.save
-            @user = UserManager.create(user_params) 
+            @user = UserManager.create(user_params)
 
             respond_to do |format|
                   if @user.persisted?
-                        format.html { redirect_to (log_in_path), notice: 'User was successfully created.' }
+                        format.html { redirect_to (log_in_path), notice: 'El usuario ha sido creado con éxito.' }
                         format.json { render :show, status: :created, location: @user }
                   else
                         format.html { render :new }

@@ -1,11 +1,40 @@
 class FactionsController < ApplicationController
 
-before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
+before_action :alter_on_login, only: [ :index, :show, :new, :create, :destroy, :join_closed]
+before_action :require_login
+before_action :require_open_for_admin, only: [:new, :create]
+before_action :prevent_join, only: [:join, :join_public, :join_private]
 
-      def join #Une al usuario a la facción y luego redirige a la facción
+
+      def join_public
             this_faction_id
-            @faction.users << @user
-            redirect_to faction_path(@faction)
+            if @faction.access = "public"
+                  @faction.users << @user
+                  redirect_to faction_path(@faction)
+            end
+      end
+
+      def join_private  #require confirmación
+            this_faction_id
+            if @faction.access = "private"
+                  @faction.users << @user
+                  @factions_user = FactionsUser.last
+                  @factions_user.waiting_approval = 1
+                  redirect_to faction_path(@faction)
+            end
+      end
+
+      def join_closed #require invitación y confirmación
+            @faction = Faction.find(@user.administrated_faction_id)
+            if @faction.access = "closed"
+                  @user = User.find(params[:user_id])
+                  @faction.users << @user
+                  @factions_user = FactionsUser.last
+                  @factions_user.waiting_approval = 1
+                  @factions_user.invited = 1
+                  @factions_user.save!
+                  redirect_to users_path
+            end
       end
 
       def leave
@@ -17,7 +46,7 @@ before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
             if @newFactUser && @faction.administrator_id == session[:user_id]
                   @faction.administrator_id = @newFactUser.user_id
                   @faction.save!
-            elsif !@newFactUser #TODO: Comprobar funcionamiento y que no deje errores en el resto de las cosas relacionadas a @faction.
+            elsif !@newFactUser
                   @faction.destroy
             end
             redirect_to faction_path(@faction)
@@ -34,7 +63,6 @@ before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
 
       def index
             @factions = Faction.all
-            #modificado para mostrar solo las facciones de un usuario.
       end
 
       def show
@@ -44,34 +72,35 @@ before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
       def new
             @faction = Faction.new
             @cities = City.all.map{|u| [u.name, u.id]}
-            #@user = User.find(session[:user_id]) #current user (Users.find(current user))
-            @users = User.all.map{|u| [u.name, u.id]}[session[:user_id] -1] #NOT TODO TODO FIXME
-            @access = %w(public closed private) #Al editarlo aqui se debe editar en 'edit'
+            @access = %w(public private closed) #Al editarlo aqui se debe editar en 'edit'
       end
 
       def create
             @faction = Faction.new(faction_params)
-            @faction.administrator = @user
-            respond_to do |format|
-                  if @faction.save
-                        #join
-                        @faction.users << @user
-                        format.html { redirect_to faction_path(@faction.id), notice: 'La facción ha sido creada exitosamente'}
-                        format.json { render action: 'show', status: :created, location: @faction}
-                  else
-                        format.html {redirect_to new_faction_path, notice: 'Error al crear facción'}
-                        format.json {render json:@faction.errors, status: :unprocessable_entity}
+            #previene creación de facciones por administradores de otras.
+                  @faction.administrator = @user
+                  respond_to do |format|
+                        if @faction.save
+                              @user.administrated_faction_id = @faction.id
+                              @user.save!
+                              #join
+                              @faction.users << @user
+                              format.html { redirect_to faction_path(@faction.id), notice: 'La facción ha sido creada exitosamente'}
+                              format.json { render action: 'show', status: :created, location: @faction}
+                        else
+                              format.html {redirect_to new_faction_path, notice: 'Error al crear facción'}
+                              format.json {render json:@faction.errors, status: :unprocessable_entity}
+                        end
                   end
-            end
       end
 
       def edit
             @faction = Faction.find(params[:id])
             @cities = City.all.map{|u| [u.name, u.id]}
-            @users = User.all.map{|u| [u.name, u.id]}
+            @users = @faction.users.map{|u| [u.name, u.id]}
             require_faction_admin(@faction)
 
-            @access = %w(public closed private) #Al editarlo aqui se debe editar en 'new'
+            @access = %w(public private closed) #Al editarlo aqui se debe editar en 'new'
       end
 
       def update
@@ -83,7 +112,7 @@ before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
                         format.json { head :no_content}
 
                   else
-                        format.html {render action: 'edit', notice: 'ERRER'}
+                        format.html {render action: 'edit', notice: 'Error al editar la facción'}
                         format.json {render json:@faction.errors, status: :unprocessable_entity}
                   end
             end
@@ -93,6 +122,7 @@ before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
             @faction = Faction.find(params[:id])
             require_faction_admin(@faction)
             @faction.destroy
+            @user.administrated_faction_id = nil
             respond_to do |format|
                   format.html {redirect_to factions_path}
                   format.json {head :no_content}
@@ -115,5 +145,18 @@ before_action :alter_on_login, only: [:join, :index, :show, :new, :create]
             @faction = Faction.find(params[:faction_id])
       end
 
+      def require_open_for_admin
+            if @user.administrated_faction_id != nil && @user.administrated_city_id == nil
+                  redirect_to factions_path, notice: 'Ya eres administrador de una facción, no puedes crear otra.'
+            end
+      end
+
+
+      def prevent_join
+            alter_on_login
+            if @user.administrated_faction_id || @user.administrated_city_id
+                  redirect_to factions_path, notice: 'No puedes unirte a esta facción porque eres administrador o alcalde.'
+            end
+      end
 
 end

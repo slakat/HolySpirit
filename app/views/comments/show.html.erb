@@ -1,0 +1,54 @@
+<div class="panel">
+      <div class='info-box'>
+            <div class="title-box">
+                  Información del comentario::
+            </div>
+            <div class="content-box">
+                  <table>
+                        <thead>
+                              <tr>
+                                    <th>Usuario</th>
+                                    <th>Lugar</th>
+                                    <th>texto</th>
+                                    <th></th>
+                                    <th></th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <% if @comment.blank? %>
+                              <tr>
+                                    <td >
+                                          <em>No se ha el comentario</em>
+                                    </td>
+                              </tr>
+                              <% else %>
+                              <tr>
+                                    <td>
+                                          <%= @comment.user.name %>
+                                    </td>
+                                    <td>
+                                          <%= @comment.point.name %>
+                                    </td>
+                                    <td>
+                                          <%= @comment.comment_text %>
+                                    </td>
+                                    <td>
+                                          <%= link_to  edit_comment_url(@comment)  do %>
+                                          <i class="fa fa-pencil"></i>
+                                          <% end %>
+                                    </td>
+                                    <td>
+                                          <%= link_to @comment, method: :delete, data: {confirm: "¿estás seguro?"} do %>
+                                          <i class="fa fa-times fa-3"></i>
+                                          <% end %>
+                                    </td>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </table>
+            </div>
+      </div>
+      <div class= "volver-a-puntos">
+             <%= link_to "Volver a #{@comment.point.name}", @comment.point%>
+      </div>
+</div>

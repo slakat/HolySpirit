@@ -1,6 +1,7 @@
-.panel
+.form-row
+      .form-title
+            Crea tu facción
       .row
-            %h2 Crea una facción
             = form_for [@faction], html: {class: 'form-horizontal' } do |f|
                   = render 'form', f: f
 

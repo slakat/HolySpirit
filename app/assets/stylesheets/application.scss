@@ -110,8 +110,6 @@ a, a:visited{
 #sidebar {
       position: fixed;
       float: left;
-      /*padding: 40px 0px 0px 0px;
-      */
       width: 10%;
       z-index: 1;
       text-align: center;
@@ -157,8 +155,32 @@ a, a:visited{
       display: inline;
 }
 
+//forms
 .form-row{
-      
 
+.form-title{
+      padding: 1em 20px;
+      background-color: #27966b ;
+      font-size: 20px;
+      width: 60%;
+      margin: 1% 19%;
+      color: #0fc;
+      border-radius:20px;
 
+}
+      .form-content-box{
+            width: 60%;
+            margin: 0px 19%;
+        padding: 10px 20px;
+        background: #D6E9C6;
+        box-shadow: 0 0 5px 0 grey ;
+        min-height: 30px;
+        border-radius:20px;
+
+            .field{
+                  font-size: 18px;
+                  padding-top: 0.5em;
+                  padding-bottom: 0.5em;
+            }
+      }
 }

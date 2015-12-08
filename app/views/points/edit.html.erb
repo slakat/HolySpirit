@@ -1,10 +1,12 @@
 
+<div class="form-row">
+      <div class="form-title">
+            Estás editando <%=@point.name%>
+      </div>
+
 <div class="row">
-  <div class="col-md-10 col-md-offset-1">
-    <h2>Editando el punto de interés</h2>
     <%= form_for [@point], html: {class: 'form-horizontal' } do |f| %>
       <%= render 'form', f: f %>
-
       <br/>
       <div class="field">
         <div class="col-md-4 col-md-offset-8">

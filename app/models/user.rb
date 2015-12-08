@@ -7,6 +7,8 @@
 #  username                 :string
 #  score                    :integer          default(0)
 #  energy                   :integer          default(100)
+#  administrated_city_id    :integer
+#  administrated_faction_id :integer
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  password_digest          :string
@@ -16,8 +18,7 @@
 #  avatar_updated_at        :datetime
 #  email                    :string
 #  validation_token         :string
-#  administrated_city_id    :integer
-#  administrated_faction_id :integer
+#  gm                       :integer
 #
 
 class User < ActiveRecord::Base
@@ -33,9 +34,9 @@ class User < ActiveRecord::Base
       has_many :factions_users, dependent: :destroy
       has_many :factions, through: :factions_users
 
-      has_one :administrated_faction, class_name: 'Faction'
+      has_one :administrated_faction, class_name: 'Faction', :foreign_key => "faction_id"
 
-      has_one :administrated_city, class_name: 'City'
+      has_one :administrated_city, class_name: 'City', :foreign_key => "city_id"
 
       has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: ActionController::Base.helpers.asset_path('/placeholder.gif')
       validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/

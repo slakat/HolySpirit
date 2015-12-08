@@ -1,7 +1,5 @@
 <div class="panel">
-      <br>
-      <br>
-      <br>
+
       <div class='info-box'>
             <div class="title-box">
                   Información del punto:
@@ -39,6 +37,7 @@
                                     <td>
                                           <%= @point.minCheckInTime %>
                                     </td>
+                                    <%if @point.city.mayor == @user%>
                                     <td>
                                           <%= link_to  edit_point_url(@point)  do %>
                                           <i class="fa fa-pencil"></i>
@@ -49,21 +48,94 @@
                                           <i class="fa fa-times fa-3"></i>
                                           <% end %>
                                     </td>
+                                    <% end %>
+
                               </tr>
                               <% end %>
                         </tbody>
                   </table>
             </div>
-            <div class='add-pic-button'>
-                  <%= button_to "agregar foto", point_add_pic_path, :method => "get" %>
+      </div>
+
+
+
+
+      <div class="info-box">
+            <div class="title-box">
+                  Comentarios:
+            </div>
+            <div class="content-box">
+                  <% if @point.comments.blank? %>
+                  <tr>
+                        <td >
+                              <em> ¡Se el primero en escribir un comentario sobre <%=@point.name%>!</em>
+                        </td>
+                  </tr>
+                  <% else %>
+                  <table>
+                        <thead>
+                              <tr>
+                                    <th>#</th>
+                                    <th>Usuario</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                              <% @point.comments.each_with_index do  |c,index |  %>
+                              <tr>
+                                    <td>
+                                          <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                          <%= link_to "#{c.user.name}", c.user %>
+                                    </td>
+                                    <td>
+                                          <%= c.comment_text %>
+                                    </td>
+                                    <%if c.user = @user%>
+                                    <td>
+                                          <%= link_to  edit_comment_url(c)  do %>
+                                          <i class="fa fa-pencil"></i>
+                                          <% end %>
+                                    </td>
+                                    <td>
+                                          <%= link_to c, method: :delete, data: {confirm: "¿estás seguro?"} do %>
+                                          <i class="fa fa-times fa-3"></i>
+                                          <% end %>
+                                    </td>
+                                    <% end %>
+                              </tr>
+                              <% end %>
+                        </tbody>
+                  </table>
+                  <% end %>
+            </div>
+
+      <div class="comment-space">
+            <div class="comment-box-title">
+                  Agrega un comentario
+            </div>
+                  <div class="comment-box">
+                        <%@comment = Comment.new%>
+                        <%= form_for [@comment], html: {class: 'form-horizontal' } do |f| %>
+                              <%= render 'comment_form', f: f %>
+                              <div class="field">
+                                   <%= f.submit 'Guardar', class:'btn btn-primary' %>
+                             </div>
+                         <% end %>
+                  </div>
             </div>
       </div>
+
+
+
       <div id='picture-point' class="info-box">
             <div class="title-box">
                   Fotos de este lugar:
             </div>
             <div class="content-box">
-
                   <% if @point.pictures.blank? %>
                   <tr>
                         <td >
@@ -96,4 +168,22 @@
                   <% end %>
             </div>
       </div>
+      <div class='add-pic-button'>
+            <%= hidden_field :point_id, :value => params[:id] %>
+            <%= button_to "agregar foto", point_add_pic_path, :method => "get" %>
+      </div>
+
+      <% if @related_resources && @related_resources.size > 0 %>
+    <div class="related-resources">
+      <h2>Recursos cercanos a "<%= @point.name %>" desde foursquare</h2>
+      <ul>
+        <% @related_resources.each do |resource| %>
+          <% if resource['name'] %>
+            <li><%= link_to resource['name'], resource['url'] %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
 </div>

@@ -57,9 +57,10 @@ Rails.application.routes.draw do
       root 'home#index'
 
       get '/map'  => 'home#map', as: 'game'
+      get '/map_gm'  => 'home#map_modal', as: 'game_gm'
 
-      get '/newmayor/:id'  => 'cities#newMayor', as: 'newMayor'
-      patch '/addmayor/:id'  => 'cities#addMayor'
+      get '/newmayor/:id'  => 'cities#new_mayor', as: 'new_mayor'
+      patch '/addmayor/:id'  => 'cities#add_mayor'
 
 
       #Rutas de sesiones
@@ -82,7 +83,9 @@ Rails.application.routes.draw do
     end
 
       resources :factions, shallow: true do
-            post '/join', to: 'factions#join'#, as: :join #Nueva ruta join reemplaza new user (factions_user anidado) FIXME: no funciona el form que usa esta ruta
+            post '/join_public', to: 'factions#join_public'
+            post '/join_private', to: 'factions#join_private'
+            post '/join_closed', to: 'factions#join_closed'
             post '/leave', to: 'factions#leave'
             resources :users, only: [:index]
             resources :points, only: [:index]
@@ -108,5 +111,6 @@ Rails.application.routes.draw do
 
 
       resources :pictures
+      resources :comments
 
 end

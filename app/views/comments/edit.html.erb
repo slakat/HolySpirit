@@ -1,0 +1,19 @@
+<div class="form-row">
+      <div class="form-title">
+            Tu comentario anterior:
+      </div>
+      <div class="single-comment-box">
+            <%=' " ' + @comment.comment_text + ' " '%>
+      </div>
+      <div class="comment-space">
+            <div class="comment-box">
+                  <%= form_for [@comment], html: {class: 'form-horizontal' } do |f| %>
+                  <%= render 'form_edit', f: f %>
+                  <br/>
+                  <div class="field">
+                              <%= f.submit 'Guardar', class:'btn btn-primary' %>
+                  </div>
+                  <% end %>
+            </div>
+      </div>
+</div>

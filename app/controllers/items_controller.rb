@@ -1,5 +1,7 @@
 class ItemsController < ApplicationController
-      
+
+      before_action :require_login
+
       def index
             @items = Item.all
             @users = User.all

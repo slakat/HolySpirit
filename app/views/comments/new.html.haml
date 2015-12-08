@@ -1,9 +1,8 @@
 .form-row
       .form-title
-            Creando un nuevo objeto
-      = form_for [@item], html: {class: 'form-horizontal' } do |f|
+            Escribe un comentario
+      = form_for [@comment], html: {class: 'form-horizontal' } do |f|
             = render 'form', f: f
-
             %br
 
             .field

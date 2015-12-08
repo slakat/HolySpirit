@@ -1,9 +1,10 @@
-.row
-  %h2 Creando un nuevo punto de interés
-  = form_for [@point], html: {class: 'form-horizontal' } do |f|
-    = render 'form', f: f
+.form-row
+      .form-title
+            Crea un nuevo punto de interés
+      = form_for [@point], html: {class: 'form-horizontal' } do |f|
+            = render 'form', f: f
 
-    %br
+            %br
 
-    .field
-      = f.submit 'Guardar', class:'btn btn-primary'
+            .field
+                  = f.submit 'Guardar', class:'btn btn-primary'

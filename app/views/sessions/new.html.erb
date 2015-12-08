@@ -1,11 +1,22 @@
-<h1>Log In</h1>
+<div class="form-row">
+      <div class="form-title">
+            Log-in
+      </div>
+	<div class="form-content-box">
 
 	<%=form_tag log_in_path do%>
+	<div class="field">
+
 		<%=label_tag :username %>
 		<%=text_field_tag :username %>
+	</div>
+		<div class="field">
 
 		<%=label_tag :password %>
 		<%=password_field_tag :password %>
+	</div>
 	<%=submit_tag "Log in" %>
 
 <%end%>
+</div>
+</div>

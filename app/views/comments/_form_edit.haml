@@ -1,0 +1,11 @@
+.form-content-box
+      .col-md-9
+            = f.hidden_field :point_id, :value => @point.id
+      .col-md-9
+            = f.hidden_field :user_id, :value => @user.id
+
+      .field
+            .col-md-3
+                  = f.label :comment_text, 'Nuevo comentario:', class: 'control-label'
+            .col-md-9
+                  = f.text_area :comment_text, class: 'form-control', required: true
