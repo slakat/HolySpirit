@@ -6,4 +6,5 @@ $("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
 <% else %>
 $("#map-modal").empty();
 $("#map-modal").html("<h1>Tu punto se ha agregado.</h1>")
+$("#map-modal").append('<button class= "btn close-modal" onClick= "closeModal()">Cerrar</button>')
 <% end %>
