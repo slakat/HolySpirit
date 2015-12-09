@@ -15,6 +15,8 @@
 #
 
 class Point < ActiveRecord::Base
+      require 'net/http'
+
       belongs_to :city
       belongs_to :faction
 
@@ -48,6 +50,24 @@ class Point < ActiveRecord::Base
                 city_id:      self.city_id
 
             }
+      end
+
+      def self.search_places(lat,lon)
+        apikey = APP_CONFIG['token_r'];
+        baseUrl = "https://api.foursquare.com/v2";
+
+        placesSearchUrl = baseUrl + '/venues/search?oauth_token=' + apikey + '&v=20151209';
+
+        coord = lat+','+lon
+        query = URI.encode(coord)
+        url = placesSearchUrl + '&ll=' + query
+        uri = URI.parse(url)
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = false
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        request = Net::HTTP::Get.new(uri.request_uri)
+        status = JSON.parse(http.request(request).body)
       end
 
 end

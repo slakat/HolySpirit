@@ -6,7 +6,7 @@ before_action :require_login, except: [:index, :show]
 
 
       def check_in #hace check in en un punto
-            @point = Point.find(params[:user_id])
+            @point = Point.find(params[:point_id])
             @point.users << @user
             @user.score += 40
             @user.save!

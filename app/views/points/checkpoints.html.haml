@@ -103,6 +103,7 @@
       shape.addListener('click', function() {
         infoWindow.setContent(pos);
         $("#button-map-modal").show();
+        $("#button-map-modal").attr('data-id',shape.id);
         infoWindow.open(map, shape);
       });
     }
@@ -142,9 +143,11 @@
             else{
               $("button-map-modal").hide();
             }
+            $("#coordinates").empty();
+            $("#coordinates").append("<h2>Desde mi ubicación actual:</>");
+            $("#coordinates").append("<p>Distancia: "+element.distance.text+"</p>");
+            $("#coordinates").append("<p>Distancia: "+element.duration.text+"</p>");
 
-            alert(element.distance.text);
-            alert(element.duration.text);
 
       }
     }
@@ -221,7 +224,7 @@
 
   /////////////////////////////////////
   function checkpoints() {
-    $("#button-map-modal").toggle();
+    $("#button-map-modal").hide();
     // Construct a new InfoWindow.
     infoWindow = new google.maps.InfoWindow({
       content: ""
@@ -357,12 +360,19 @@
   #cursel
   %br
   %br
-  =button_to 'Check in',"", :method => "post", id: "button-map-modal"
+  #coordinates
   #note
   %br
   %br
-  #coordinates
+  =link_to 'Check in', user_check_in_path(1),:method => "post", id: "button-map-modal", 'data-id'=>"", class: "button"
   %br
 
 %input#pac-input{:placeholder => "Buscar lugar", :type => "text"}/
 #map A
+
+
+:javascript
+  //user_check_in_path(p.id)
+  $('#button-map-modal').on('click', function(event, data) {
+      this.href = this.href + '?point_id=' + $(this).attr('data-id')
+    });

@@ -48,7 +48,7 @@
                         <div class='button-link'>
                               <%= link_to "Perfil", user_path(session[:user_id])%>
                         </div>
-                  <%end %>
+
 
                   <div id='welcome'>
                         <%if @user != nil && @user.administrated_city_id%>
@@ -57,6 +57,7 @@
                               <%= link_to "CityConquest", checkpoints_path%>
                         <%end%>
                   </div>
+              <%end %>
             </header>
 
             <div id='content'>
