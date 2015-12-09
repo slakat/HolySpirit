@@ -16,7 +16,15 @@
       $.getJSON('/checkpoints/all',{
       }, function(data){
             for (var index = 0; index < data.length; ++index) {
-                points.push(data[index]);
+                pointsget(data,index,map);
+            }
+          return data;
+      });
+
+  }
+
+  function pointsget(data,index,map){
+  points.push(data[index]);
                 var place = data[index];
 
               var latLng = {lat:place.x , lng: place.y};
@@ -38,10 +46,6 @@
         });
 
         placeMarkers.push(marker);
-            }
-          return data;
-      });
-
   }
 
   function clearSelection() {
