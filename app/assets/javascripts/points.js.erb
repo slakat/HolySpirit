@@ -8,6 +8,60 @@ var selectedColor;
 var colorButtons = {};
 var infoWindow;
 
+function getPoints(map,lat,lng) {
+    var coord = (map.getCenter().toUrlValue(6)).split(",");
+    lat = coord[0];
+    lng = coord[1];
+    $.getJSON('/checkpoints/foursquare?lat='+lat+'&lng='+lng,{
+    }, function(data){
+    for (var index = 0; index < data.length; index++) {
+        //points.push(data[index]);
+        var place = data[index];
+
+        var latLng = {lat: place.x, lng: place.y};
+        // Create a marker for each place.
+        var marker = new google.maps.Marker({
+            map: map,
+            title: place.name,
+            position: latLng,
+            description: place.description
+        });
+        marker.addListener('click', function () {
+
+            infoWindow.setContent(place.name + ": " + place.description);
+            infoWindow.open(map, marker);
+        });
+        google.maps.event.addListener(marker, 'click', function () {
+            setSelection2(map, marker, false);
+        });
+
+        placeMarkers.push(marker);
+    }
+    return data;
+    });
+
+
+}function setSelection2(map,shape, isNotMarker) {
+    clearSelection();
+    selectedShape = shape;
+    pos = ""+selectedShape.position;
+    if (typeof selectedShape.position == 'object') {
+        posstr = selectedShape.position.toUrlValue(6);
+    }
+    if (isNotMarker)
+        shape.setEditable(true);
+    else{
+        // Opens the InfoWindow when marker is clicked.
+        shape.addListener('click', function() {
+            //infoWindow.setContent(pos);
+            $("#button-map-modal").show();
+            infoWindow.open(map, shape);
+        });
+    }
+    selectColor(shape.get('fillColor') || shape.get('strokeColor'));
+    updateCurSelText(shape);
+}
+
 
 function clearSelection() {
     if (selectedShape) {
@@ -144,6 +198,7 @@ function buildColorPalette() {
 var map; //= new google.maps.Map(document.getElementById('map'), {
 // these must have global refs too!:
 var placeMarkers = [];
+var points=[];
 var input;
 var searchBox;
 var curposdiv;
@@ -174,6 +229,10 @@ function initialize() {
     });
     curposdiv = document.getElementById('curpos');
     curseldiv = document.getElementById('cursel');
+
+    $('#foursquare').on('click', function(event, data) {
+        getPoints(map)
+    });
 
     var polyOptions = {
         strokeWeight: 0,

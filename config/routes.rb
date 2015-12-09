@@ -107,6 +107,7 @@ Rails.application.routes.draw do
       get '/home/map_modal',:defaults =>{:format => 'js'}, to: 'home#map_modal', :as => :map_modal
       get '/checkpoints', to: 'points#checkpoints', :as => :checkpoints
       get '/checkpoints/all',:defaults =>{:format => 'json'}, to: 'points#all', :as => :all_points
+      get '/checkpoints/foursquare',:defaults =>{:format => 'json'}, to: 'points#foursquare'
       get '/points/:id/add_pic', to: 'pictures#new', as: :point_add_pic
 
 

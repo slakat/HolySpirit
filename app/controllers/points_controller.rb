@@ -120,6 +120,10 @@ before_action :require_login, except: [:index, :show]
             render json: Point.all.as_json
       end
 
+      def foursquare
+            render json: Point.search_places(params[:lat],params[:lng])
+      end
+
       def create_checkin
             @point_user = PointsUser.new(checkin_params)
             respond_to do |format|

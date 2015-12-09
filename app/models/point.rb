@@ -53,12 +53,13 @@ class Point < ActiveRecord::Base
       end
 
       def self.search_places(lat,lon)
-        apikey = APP_CONFIG['token_r'];
+        require 'net/http'
+        apikey = "3EIAVINWFLVHYRC131JRNQOFS5TLWUOBCSQ0BPEMWMFSN0JU"
         baseUrl = "https://api.foursquare.com/v2";
 
         placesSearchUrl = baseUrl + '/venues/search?oauth_token=' + apikey + '&v=20151209';
 
-        coord = lat+','+lon
+        coord = lat.to_s+','+lon.to_s
         query = URI.encode(coord)
         url = placesSearchUrl + '&ll=' + query
         uri = URI.parse(url)
@@ -67,7 +68,16 @@ class Point < ActiveRecord::Base
         http.use_ssl = false
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         request = Net::HTTP::Get.new(uri.request_uri)
-        status = JSON.parse(http.request(request).body)
+        #status = http.request(request).body
+        require 'open-uri'
+        content = JSON.parse(open(uri).read)
+        venues = content["response"]["venues"]
+        places = []
+        venues.each do |v|
+          place = {name: v["name"], x: v["location"]["lat"], y: v["location"]["lng"], description: v["location"]["address"]}
+          places << place
+        end
+        places
       end
 
 end
