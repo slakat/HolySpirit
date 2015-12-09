@@ -1,16 +1,17 @@
 class HomeController < ApplicationController
+
+      before_action :city_mayor_access, only: [:map]
+
   def index
         dev
   end
 
+def map
+end
+
   def map_modal
     @cities = City.all.map{|u| [u.name, u.id]}
     @point =  Point.new
-    @points = Point.all.map{|u| [u.name, u.id]}
-  end
-
-  def map_gm
-    @cities = City.all.map{|u| [u.name, u.id]}
     @points = Point.all.map{|u| [u.name, u.id]}
   end
 

@@ -198,9 +198,8 @@ before_action :require_login, except: [:index, :show]
             alter_on_login
             @point = Point.find(params[:id])
             if @point.city.mayor != @user
-                  redirect_to points_path, notice: 'No puedes editar este punto sin ser el alcalde'
+                  redirect_to points_path, notice: 'No puedes editar o agregar puntos sin ser el alcalde'
             end
       end
-      #TODO: block creation of points
 
 end

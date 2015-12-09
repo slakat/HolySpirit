@@ -40,6 +40,11 @@ class ApplicationController < ActionController::Base
           end
       end
 
-
+      def city_mayor_access
+            @user = User.find(session[:user_id])
+            if @user.administrated_city_id == nil
+                  redirect_to points_path, notice: 'No puedes editar o agregar puntos sin ser el alcalde'
+            end
+      end
 
 end

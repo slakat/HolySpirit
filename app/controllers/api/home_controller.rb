@@ -9,11 +9,6 @@ class Api::HomeController < ApplicationController
     @points = Point.all.map{|u| [u.name, u.id]}
   end
 
-  def map_gm
-    @cities = City.all.map{|u| [u.name, u.id]}
-    @points = Point.all.map{|u| [u.name, u.id]}
-  end
-
  private
  def dev
        @users = User.all.each do |u|
