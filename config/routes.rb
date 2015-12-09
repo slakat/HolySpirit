@@ -113,4 +113,16 @@ Rails.application.routes.draw do
       resources :pictures
       resources :comments
 
+
+      namespace :api do
+            resources :users
+            resources :points
+            resources :cities
+            resources :factions
+            resources :items
+            resources :comments
+            resources :pictures
+
+      end
+
 end

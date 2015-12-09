@@ -1,4 +1,4 @@
-class CommentsController < ApplicationController
+class Api::CommentsController < ApplicationController
 
 before_action :require_login
 
@@ -6,10 +6,14 @@ before_action :alter_on_login
 
       def index
             @comments = Comment.all
+            render json: @comments, include: ['comments_users']
+
       end
 
       def show
             @comment = Comment.find(params[:id])
+            render json: @comment, include: ['comments_users']
+
       end
 
       def new

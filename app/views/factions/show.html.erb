@@ -80,9 +80,9 @@
             <div class='content-box'>
                   <% if @faction.administrator_id.to_s == @user.id.to_s %>
                         Eres administrador de esta facción.
-                  <%elsif FactionsUser.find_by(user_id: session[:user_id], faction_id: params[:id]).waiting_approval = 1%>
+                  <%elsif FactionsUser.find_by(user_id: session[:user_id], faction_id: params[:id]).waiting_approval != nil%>
                         <%= 'El administrador debe aprobarte para que seas miembro. '%>
-                  <%elsif FactionsUser.find_by(user_id: session[:user_id], faction_id: params[:id]).invited = 1%>
+                  <%elsif FactionsUser.find_by(user_id: session[:user_id], faction_id: params[:id]).invited != nil%>
                         <%= 'Has sido invitado a esta facción, pero el administrador aún debe aprobarte. '%>
                   <%else%>
                         <%= 'Eres miembro de esta facción. '%>

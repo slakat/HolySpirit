@@ -35,8 +35,8 @@ before_action :require_login, except: [:index, :show]
             #:x => :float,
             #:y => :float,
             @point = Point.find(params[:id])
-            @doc = OpenDocumentService.new
-            @related_resources = @doc.get_documents_for(@point.x, @point.y, 10)
+            #@doc = OpenDocumentService.new
+            #@related_resources = @doc.get_documents_for(@point.x, @point.y, 10)
       end
 
       def new

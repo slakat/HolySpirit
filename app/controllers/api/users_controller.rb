@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class Api::UsersController < ApplicationController
 
       before_action :require_current_user, only: [ :edit, :update, :destroy] #, :get_item, :use_item] falla el require por el id de la url.
       #before_action :alter_on_login, only [:get_item, :use_item]
@@ -9,10 +9,10 @@ class UsersController < ApplicationController
       def get_item
             alter_on_login
             #if @user.energy  - 100 > 0
-                  @user.energy += 100
-                  @user.save!
-                  @user.items << Item.find(params[:user_id])#:user_id = id del item.
-                  redirect_to items_path
+            @user.energy += 100
+            @user.save!
+            @user.items << Item.find(params[:user_id])#:user_id = id del item.
+            render json: @user, status: :got_item
       end
 
       def use_item
@@ -24,25 +24,26 @@ class UsersController < ApplicationController
 
                   @iteUser = UsersItem.find_by(user_id: session[:user_id], item_id: params[:user_id])#:user_id = item_id
                   @iteUser.destroy
-                  redirect_to items_path
+                  render json: @user, status: :used_item
             else
-                      flash[:notice] = "No tienes suficiente energía."
+                  render json: @user, status: :not_enough_energy
             end
       end
 
       def validate
-        user = User.find_by(validation_token: params[:token])
-        if user
-          user.update(validation_token: nil) #TODO: session imposible con validation_token != null
-          redirect_to log_in_path, notice: 'Cuenta validada exitosamente.'
-        else
-          redirect_to root_path, alert: 'Link de validación incorrecto.'
-        end
+            user = User.find_by(validation_token: params[:token])
+            if user
+                  user.update(validation_token: nil) #TODO: session imposible con validation_token != null
+                  render json: @user, status: :validated
+            else
+                  render json: @user, [status: :wrong_link]
+            end
       end
 
       def index
             @users = User.all
-            faction_nesting
+            render json: @users
+
       end
 
       def show
@@ -50,25 +51,22 @@ class UsersController < ApplicationController
             @points_users = PointsUser.where(user_id: @user.id)
             @factions_users = FactionsUser.where(user_id: @user.id)
             @items_users = UsersItem.where(user_id: @user.id)
+
+            render json: @user, include: ['points_users', 'factions_users', 'users_items'], status: :success
+
       end
+
 
       def new
             @user = User.new
-            faction_nesting #FIXME puede que ya no sea necesario por /join
       end
 
       def create
-            # @user = User.new(user_params)
-            #
-            #      if @user.save
             @user = UserManager.create(user_params)
-
             respond_to do |format|
-                  if @user.persisted?
-                        format.html { redirect_to (log_in_path), notice: 'El usuario ha sido creado con éxito.' }
+                  if @user.save
                         format.json { render :show, status: :created, location: @user }
                   else
-                        format.html { render :new }
                         format.json { render json: @user.errors, status: :unprocessable_entity }
                   end
             end
@@ -79,15 +77,10 @@ class UsersController < ApplicationController
       end
 
       def update
-            @user = User.find(params[:id])
-            respond_to do |format|
-                  if @user.update(user_params)
-                        format.html { redirect_to user_path(@user.id), notice: 'El Usuario ha sido creado correctamente'}
-                        format.json { head :no_content}
-                  else
-                        format.html {render action: 'edit', notice: 'ERROR'}
-                        format.json {render json:@user.errors, status: :unprocessable_entity}
-                  end
+            if @user.update(user_params)
+                  render json: @user, status: :success
+            else
+                  render json: @user, status: :error
             end
       end
 
@@ -98,15 +91,11 @@ class UsersController < ApplicationController
                   @faction.destroy
             else
                   @user.factions.each do |faction|
-                              FactionsUser.find_by(user_id: session[:user_id], faction_id: faction.id).destroy
+                        FactionsUser.find_by(user_id: session[:user_id], faction_id: faction.id).destroy
                   end
             end
             @user.destroy
-            respond_to do |format|
-                  format.html {redirect_to log_out_path, notice: 'Eliminaste tu usuario.'}
-                  format.json {head :no_content}
-            end
-            #session.destroy
+            render json: 'status: :success'
       end
 
       private

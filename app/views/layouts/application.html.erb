@@ -51,10 +51,10 @@
                   <%end %>
 
                   <div id='welcome'>
-                        <%if @user != nil && @user.gm%>
+                        <%if @user != nil && @user.administrated_city_id%>
                               <%= link_to "CityConquest", game_path%>
                                     <%else%>
-                              <%= link_to "CityConquest", game_path%>
+                              <%= link_to "CityConquest", checkpoints_path%>
                         <%end%>
                   </div>
             </header>

@@ -2,5 +2,5 @@
 
 <p>
   Hola, <%= @user.name %>. Valida tu cuenta con el siguiente link:
-  <%= link_to validate_users_path(@user.validation_token), "http://localhost:3000#{validate_users_path(@user.validation_token)}" %>
+  <%= link_to validate_users_path(@user.validation_token), "https://nameless-shore-3922.herokuapp.com/#{validate_users_path(@user.validation_token)}" %>
 </p>
