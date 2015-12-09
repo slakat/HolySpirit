@@ -8,58 +8,44 @@ var selectedColor;
 var colorButtons = {};
 var infoWindow;
 
-function getPoints(map,lat,lng) {
+function getPoints(map,info) {
     var coord = (map.getCenter().toUrlValue(6)).split(",");
-    lat = coord[0];
-    lng = coord[1];
+    var lat = coord[0];
+    var lng = coord[1];
     $.getJSON('/checkpoints/foursquare?lat='+lat+'&lng='+lng,{
     }, function(data){
     for (var index = 0; index < data.length; index++) {
-        //points.push(data[index]);
-        var place = data[index];
-
-        var latLng = {lat: place.x, lng: place.y};
-        // Create a marker for each place.
-        var marker = new google.maps.Marker({
-            map: map,
-            title: place.name,
-            position: latLng,
-            description: place.description
-        });
-        marker.addListener('click', function () {
-
-            infoWindow.setContent(place.name + ": " + place.description);
-            infoWindow.open(map, marker);
-        });
-        google.maps.event.addListener(marker, 'click', function () {
-            setSelection2(map, marker, false);
-        });
-
-        placeMarkers.push(marker);
+        createMarker(map,data[index],info);
     }
+
     return data;
     });
 
 
-}function setSelection2(map,shape, isNotMarker) {
-    clearSelection();
-    selectedShape = shape;
-    pos = ""+selectedShape.position;
-    if (typeof selectedShape.position == 'object') {
-        posstr = selectedShape.position.toUrlValue(6);
-    }
-    if (isNotMarker)
-        shape.setEditable(true);
-    else{
-        // Opens the InfoWindow when marker is clicked.
-        shape.addListener('click', function() {
-            //infoWindow.setContent(pos);
-            $("#button-map-modal").show();
-            infoWindow.open(map, shape);
-        });
-    }
-    selectColor(shape.get('fillColor') || shape.get('strokeColor'));
-    updateCurSelText(shape);
+}
+function createMarker(map,i,info) {
+    //points.push(data[index]);
+    var place = i;
+
+    var latLng = {lat: place.x, lng: place.y};
+    // Create a marker for each place.
+    var marker = new google.maps.Marker({
+        map: map,
+        title: place.name,
+        position: latLng,
+        description: place.description
+    });
+    marker.addListener('click', function () {
+        setSelection(map, marker, false);
+        info.setContent(marker.title + ": " + marker.description);
+        info.open(map, marker);
+    });
+    google.maps.event.addListener(marker, 'click', function () {
+        setSelection(map, marker, false);
+    });
+
+    placeMarkers.push(marker);
+
 }
 
 
@@ -120,7 +106,7 @@ function setSelection(map,shape, isNotMarker) {
     else{
         // Opens the InfoWindow when marker is clicked.
         shape.addListener('click', function() {
-            infoWindow.setContent(pos);
+            infoWindow.setContent(shape.title+" "+pos);
             $("#button-map-modal").show();
             infoWindow.open(map, shape);
         });
@@ -231,7 +217,7 @@ function initialize() {
     curseldiv = document.getElementById('cursel');
 
     $('#foursquare').on('click', function(event, data) {
-        getPoints(map)
+        getPoints(map,infoWindow)
     });
 
     var polyOptions = {
